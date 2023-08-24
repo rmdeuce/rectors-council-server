@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         {
             var query = new GetAdvertisementListQuery
             {
-
+                // TODO: pagination
             };
 
             var result = await Mediator.Send(query);
