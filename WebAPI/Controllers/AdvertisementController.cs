@@ -61,5 +61,28 @@ namespace WebAPI.Controllers
             // TODO: сформировать ссылку на новый элемент
             return Created("", id);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateAdvertisementDTO dto)
+        {
+            var command = mapper.Map<UpdateAdvertisementCommand>(dto);
+
+            await Mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteAdvertisementCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            return NoContent();
+        }
     }
 }
