@@ -14,7 +14,7 @@ namespace Persistence.DB
 
             services.AddDbContext<AppDBContext>(options =>
             {
-                options.UseNpgsql(connectionString);
+                options.UseNpgsql(connectionString, b => b.MigrationsAssembly("WebAPI"));
             });
 
             services.AddScoped<IAppDBContext>(provider =>
