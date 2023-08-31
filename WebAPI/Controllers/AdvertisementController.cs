@@ -3,6 +3,7 @@ using Application.Features.Advertisement.Commands;
 using Application.Features.Advertisement.Queries;
 using Application.Features.Advertisement.Queries.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.DTO.Advertisement;
 
@@ -17,12 +18,17 @@ namespace WebAPI.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<AdvertisementListDTO>> GetAll()
+        [HttpGet("{page?}/{count?}")]
+        public async Task<ActionResult<AdvertisementListDTO>> GetAll(int page = 0, int count = 10)
         {
+            page = page > 0 ? page - 1 : 0;
+
+            var position = count * page;
+
             var query = new GetAdvertisementListQuery
             {
-                // TODO: pagination
+                Position = position,
+                Take = count
             };
 
             var result = await Mediator.Send(query);

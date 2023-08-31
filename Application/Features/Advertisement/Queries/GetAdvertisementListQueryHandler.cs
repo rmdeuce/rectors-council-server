@@ -20,15 +20,19 @@ namespace Application.Features.Advertisement.Queries
 
         public async Task<AdvertisementListDTO> Handle(GetAdvertisementListQuery request, CancellationToken cancellationToken)
         {
-            // TODO: pagination
-
             var query = await dbContext.Advertisements
                 .Where(e => !e.IsDeleted)
+                .OrderByDescending(e => e.UpdatedAt)
+                .Skip(request.Position)
+                .Take(request.Take)
                 .ProjectTo<AdvertisementPreviewDTO>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
+            var total = await dbContext.Advertisements.CountAsync(e => !e.IsDeleted);
+
             return new AdvertisementListDTO
             {
+                Total = total,
                 Advertisements = query
             };
         }

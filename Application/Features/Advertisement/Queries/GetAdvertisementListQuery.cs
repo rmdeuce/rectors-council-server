@@ -5,6 +5,8 @@ namespace Application.Features.Advertisement.Queries
 {
     public class GetAdvertisementListQuery : IRequest<AdvertisementListDTO>
     {
-        // TODO: pagination
+        public int Position { get; set; }
+
+        public int Take { get; set; }
     }
 }
