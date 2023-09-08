@@ -1,22 +1,18 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace WebAPI.Controllers
 {
-    // TODO: Сохранить какие-нибудь данные о пользователе, чтобы знать, кто изменял сущность
-
     [ApiController]
     [Route("api/[controller]/[action]")]
     public abstract class BaseController : ControllerBase
     {
         private IMediator mediator;
+        private string userEmail;
 
-        protected IMediator Mediator
-        { 
-            get
-            {
-                return mediator ??= HttpContext.RequestServices.GetService<IMediator>();
-            }
-        }
+        protected IMediator Mediator => mediator ??= HttpContext.RequestServices.GetService<IMediator>();
+
+        protected string UserEmail => userEmail ??= User?.Claims?.FirstOrDefault(c => c?.Type == ClaimTypes.Email)?.Value;
     }
 }
