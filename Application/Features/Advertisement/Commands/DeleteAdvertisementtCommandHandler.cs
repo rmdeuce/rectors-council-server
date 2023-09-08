@@ -21,7 +21,7 @@ namespace Application.Features.Advertisement.Commands
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.Advertisement), request.Id);
 
-            entity.IsDeleted = request.IsDeleted;
+            entity.IsDeleted = true;
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
