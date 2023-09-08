@@ -16,43 +16,15 @@ namespace WebAPI
 
             builder.Services.AddHttpClient();
             builder.Services.AddMemoryCache();
-            // TODO: нужно сделать катомную логгер факту или логгер (с логгированием в файл или в БД)
+            // TODO: нужно сделать каcтомную логгер факту или логгер (с логгированием в файл или в БД)
             builder.Services.AddLogging();
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddScheme<JwtBearerOptions, KeycloakJwtBearerHandler>(JwtBearerDefaults.AuthenticationScheme, options => { });
+            AddAuthWithCustomJWT(builder);
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
 
-            // Авторизация в Сваггере
-            builder.Services.AddSwaggerGen(option =>
-            {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
-                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Please enter a valid token",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    BearerFormat = "JWT",
-                    Scheme = "Bearer"
-                });
-                option.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-            });
+            AddSwaggerWithAuth(builder);
 
             builder.Services.AddAutoMapper(config =>
             {
@@ -63,13 +35,7 @@ namespace WebAPI
             builder.Services.AddApplication();
             builder.Services.AddPersistence(builder.Configuration);
 
-            builder.Services.AddCors(p => p.AddPolicy("default", corsPolicyBuilder =>
-            {
-                // TODO: не забыть поправить ориджин
-                corsPolicyBuilder.WithOrigins("*")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
+            AddCorsWithOrigins(builder);
 
             var app = builder.Build();
 
@@ -102,6 +68,55 @@ namespace WebAPI
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
+        }
+
+        private static void AddSwaggerWithAuth(WebApplicationBuilder builder)
+        {
+            // Авторизация в Сваггере
+            builder.Services.AddSwaggerGen(option =>
+            {
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter a valid token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
+        }
+
+        private static void AddCorsWithOrigins(WebApplicationBuilder builder)
+        {
+            builder.Services.AddCors(p => p.AddPolicy("default", corsPolicyBuilder =>
+            {
+                // TODO: не забыть поправить ориджин
+                corsPolicyBuilder.WithOrigins("*")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+        }
+
+        private static void AddAuthWithCustomJWT(WebApplicationBuilder builder)
+        {
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddScheme<JwtBearerOptions, KeycloakJwtBearerHandler>(JwtBearerDefaults.AuthenticationScheme, options => { });
         }
     }
 }
