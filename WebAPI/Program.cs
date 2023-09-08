@@ -16,6 +16,7 @@ namespace WebAPI
 
             builder.Services.AddHttpClient();
             builder.Services.AddMemoryCache();
+            // TODO: нужно сделать катомную логгер факту или логгер (с логгированием в файл или в БД)
             builder.Services.AddLogging();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
