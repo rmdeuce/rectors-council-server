@@ -5,6 +5,7 @@ using Application.Interfaces;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TGMU.Utils.Auth.Jwt;
+using WebAPI.Middleware;
 
 namespace WebAPI
 {
@@ -62,6 +63,7 @@ namespace WebAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseCustomExceptionHandler();
             app.UseCors("default");
             app.UseHttpsRedirection();
             app.UseAuthentication();

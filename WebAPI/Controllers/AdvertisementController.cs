@@ -46,17 +46,9 @@ namespace WebAPI.Controllers
                 Id = id
             };
 
-            try
-            {
-                var result = await Mediator.Send(query);
+            var result = await Mediator.Send(query);
 
-                return Ok(result);
-            }
-            catch (NotFoundException e)
-            {
-                // TODO: сделать перехват исключений
-                return NotFound("Объявление не существует");
-            }           
+            return Ok(result);      
         }
 
         [HttpPost]
