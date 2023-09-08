@@ -24,6 +24,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<AdvertisementListDTO>> GetAll(int page = 0, int count = 10)
         {
             page = page > 0 ? page - 1 : 0;
+            count = count > 50 ? 50 : count;
 
             var position = count * page;
 

@@ -20,22 +20,18 @@ namespace Persistence.DB
         public DbSet<University> Universities { get; set; }
         public DbSet<CouncilMemberUniversityPosition> CouncilMemberUniversityPositions { get; set; }
 
-        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
+        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
+        {
+            //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
 
         public override int SaveChanges()
         {
             foreach (var entity in ChangeTracker.Entries())
             {
                 if (entity.State == EntityState.Modified)
-                    entity.Property("UpdatedAt").CurrentValue = DateTime.Now;
+                    entity.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
             }
-
-            //var modifiedEntities = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);
-
-            //foreach (var entity in modifiedEntities)
-            //{
-            //    entity.Property("UpdatedAt").CurrentValue = DateTime.Now;
-            //}
 
             return base.SaveChanges();
         }
@@ -44,8 +40,9 @@ namespace Persistence.DB
         {
             foreach (var entity in ChangeTracker.Entries())
             {
+                // Если не UTC, то падает, т.е. пострес требует именно UTC
                 if (entity.State == EntityState.Modified)
-                    entity.Property("UpdatedAt").CurrentValue = DateTime.Now;
+                    entity.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
             }
 
             return base.SaveChangesAsync(cancellationToken);
