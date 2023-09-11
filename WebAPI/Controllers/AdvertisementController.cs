@@ -2,6 +2,7 @@
 using Application.Features.Advertisement.Commands;
 using Application.Features.Advertisement.Queries;
 using Application.Features.Advertisement.Queries.DTO;
+using Application.Features.Agendas.Queries;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,14 +43,23 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AdvertisementDTO>> Get(int id)
         {
-            var query = new GetAdvertisementQuery
+            var advertisementQuery = new GetAdvertisementQuery
             {
                 Id = id
             };
 
-            var result = await Mediator.Send(query);
+            var advertisement = await Mediator.Send(advertisementQuery);
 
-            return Ok(result);      
+            var agendaQuery = new GetAgendaListByAdvertisementQuery
+            {
+                AdvertisementId = id
+            };
+
+            var agendas = await Mediator.Send(agendaQuery);
+
+            advertisement.Agendas = agendas.Agendas;
+
+            return Ok(advertisement);      
         }
 
         [HttpPost]
