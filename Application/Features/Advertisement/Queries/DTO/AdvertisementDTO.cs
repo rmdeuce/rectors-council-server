@@ -1,6 +1,6 @@
 ﻿using Application.Common.Mappings;
+using Application.Features.Agendas.Queries.DTO;
 using AutoMapper;
-using Domain.Entities;
 
 namespace Application.Features.Advertisement.Queries.DTO
 {
@@ -9,7 +9,7 @@ namespace Application.Features.Advertisement.Queries.DTO
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<Agenda> Agendas { get; set; }
+        public List<AgendaDTO> Agendas { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
