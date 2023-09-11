@@ -7,18 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Agendas.Queries
 {
-    public class GetAgendaListQueryHandler : IRequestHandler<GetAgendaListQuery, AgendaListDTO>
+    public class GetAgendaListByAdvertisementQueryHandler : IRequestHandler<GetAgendaListByAdvertisementQuery, AgendaListDTO>
     {
         private readonly IAppDBContext dbContext;
         private readonly IMapper mapper;
 
-        public GetAgendaListQueryHandler(IAppDBContext dbcontext, IMapper mapper)
+        public GetAgendaListByAdvertisementQueryHandler(IAppDBContext dbcontext, IMapper mapper)
         {
             this.dbContext = dbcontext;
             this.mapper = mapper;
         }
 
-        public async Task<AgendaListDTO> Handle(GetAgendaListQuery request, CancellationToken cancellationToken)
+        public async Task<AgendaListDTO> Handle(GetAgendaListByAdvertisementQuery request, CancellationToken cancellationToken)
         {
             var query = await dbContext.Agendas.
                 Where(e => e.AdvertisementId == request.AdvertisementId && !e.IsDeleted)

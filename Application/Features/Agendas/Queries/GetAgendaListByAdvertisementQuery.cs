@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Features.Agendas.Queries
 {
-    public class GetAgendaListQuery : IRequest<AgendaListDTO>
+    public class GetAgendaListByAdvertisementQuery : IRequest<AgendaListDTO>
     {
         public int AdvertisementId { get; set; }
     }
