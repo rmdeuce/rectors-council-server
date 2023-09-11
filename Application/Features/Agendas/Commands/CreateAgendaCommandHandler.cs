@@ -18,6 +18,7 @@ namespace Application.Features.Agendas.Commands
             var agenda = new Agenda
             {
                 AdvertisementId = request.AdvertisementId,
+                NewsId = request.NewsId,
                 Description = request.Description,
                 Speakers = request.Speakers,
                 CoSpeakers = request.CoSpeakers

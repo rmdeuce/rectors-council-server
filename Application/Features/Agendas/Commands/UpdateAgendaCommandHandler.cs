@@ -19,7 +19,7 @@ namespace Application.Features.Agendas.Commands
             var entity = await dbContext.Agendas.FirstOrDefaultAsync(e => e.Id == request.Id);
 
             if (entity == null)
-                throw new NotFoundException(nameof(Domain.Entities.Advertisement), request.Id);
+                throw new NotFoundException(nameof(Domain.Entities.Agenda), request.Id);
 
             entity.Description = request.Description;
             entity.Speakers = request.Speakers;
