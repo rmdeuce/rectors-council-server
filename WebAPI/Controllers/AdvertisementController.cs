@@ -62,6 +62,7 @@ namespace WebAPI.Controllers
             return Ok(advertisement);      
         }
 
+        [Authorize(Roles = "Content manager")]
         [HttpPost]
         public async Task<ActionResult<int>> Create([FromBody] CreateAdvertisementDTO dto)
         {
@@ -75,6 +76,7 @@ namespace WebAPI.Controllers
             return Created("", id);
         }
 
+        [Authorize(Roles = "Content manager")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateAdvertisementDTO dto)
         {
@@ -87,6 +89,7 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Content manager")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
