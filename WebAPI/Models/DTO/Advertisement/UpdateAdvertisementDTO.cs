@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace WebAPI.Models.DTO.Advertisement
 {
-    public class UpdateAdvertisementDTO : IMapWith<CreateAdvertisementCommand>
+    public class UpdateAdvertisementDTO : IMapWith<UpdateAdvertisementCommand>
     {
         public int Id { get; set; }
         public string Title { get; set; }
