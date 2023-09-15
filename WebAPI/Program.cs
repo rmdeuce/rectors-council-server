@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TGMU.Utils.Auth.Jwt;
 using WebAPI.Middleware;
+using TGMU.Utils.Auth.Jwt.Helpers;
 
 namespace WebAPI
 {
@@ -117,6 +118,7 @@ namespace WebAPI
 
         private static void AddAuthWithCustomJWT(WebApplicationBuilder builder)
         {
+            builder.Services.AddSingleton<ICacheTokenHelper, CacheTokenHelper>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddScheme<JwtBearerOptions, KeycloakJwtBearerHandler>(JwtBearerDefaults.AuthenticationScheme, options => { });
         }

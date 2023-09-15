@@ -1,6 +1,7 @@
 .vscode
 .vs
 appsettings.Production.json
+appsettings.Development.json
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
