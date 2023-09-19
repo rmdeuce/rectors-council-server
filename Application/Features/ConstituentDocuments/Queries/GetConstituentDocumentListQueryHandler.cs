@@ -10,8 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
+using Application.Features.ConstituentDocuments.Queries.DTO;
 
-namespace Application.Features.ConstituentDocuments.Queries.DTO
+namespace Application.Features.ConstituentDocuments.Queries
 {
     public class GetConstituentDocumentListQueryHandler : IRequestHandler<GetConstituentDocumentListQuery, ConstituentDocumentListDTO>
     {
@@ -20,7 +21,7 @@ namespace Application.Features.ConstituentDocuments.Queries.DTO
 
         public GetConstituentDocumentListQueryHandler(IAppDBContext dbcontext, IMapper mapper)
         {
-            this.dbContext = dbcontext;
+            dbContext = dbcontext;
             this.mapper = mapper;
         }
 
@@ -42,6 +43,5 @@ namespace Application.Features.ConstituentDocuments.Queries.DTO
                 ConstituentDocuments = query
             };
         }
-
     }
 }

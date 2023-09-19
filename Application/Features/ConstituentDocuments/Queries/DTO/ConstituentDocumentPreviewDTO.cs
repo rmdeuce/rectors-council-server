@@ -13,9 +13,7 @@ namespace Application.Features.ConstituentDocuments.Queries.DTO
     public class ConstituentDocumentPreviewDTO : IMapWith<ConstituentDocument>
     {
         public int Id { get; set; }
-        public string DocumentUrl { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public void Mapping(Profile profile)
