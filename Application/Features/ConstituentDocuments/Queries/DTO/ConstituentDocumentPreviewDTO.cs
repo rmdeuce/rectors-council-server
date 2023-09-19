@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Common.Mappings;
+using AutoMapper;
 using Domain.Entities;
 using Newtonsoft.Json.Bson;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.ConstituentDocuments.Queries.DTO
 {
-    public class ConstituentDocumentPreviewDTO
+    public class ConstituentDocumentPreviewDTO : IMapWith<ConstituentDocument>
     {
         public int Id { get; set; }
         public string DocumentUrl { get; set; }

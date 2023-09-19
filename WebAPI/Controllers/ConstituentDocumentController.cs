@@ -1,7 +1,10 @@
-﻿using Application.Features.ConstituentDocuments.Queries;
+﻿using Application.Features.ConstituentDocuments.Commands;
+using Application.Features.ConstituentDocuments.Queries;
 using Application.Features.ConstituentDocuments.Queries.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.DTO.ConstituentDocument;
 
 namespace WebAPI.Controllers
 {
@@ -38,18 +41,57 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ConstituentDocumentDTO>> Get(int id)
         {
-            var constituentDocumentQuery = new GetConstituentDocumentQuery
+            var query = new GetConstituentDocumentQuery
             {
                 Id = id
             };
 
-            var constituentDocument = await Mediator.Send(constituentDocumentQuery);
+            var result = await Mediator.Send(query);
 
-            return Ok(constituentDocument);
+            return Ok(result);
         }
 
-        //[Authorize(Roles = "Content manager")]
-        //[HttpPost]
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]  
+        public async Task<ActionResult<int>> Create([FromBody] CreateConstituentDocumentDTO dto)
+        {
+            var command = mapper.Map<CreateConstituentDocumentCommand>(dto);
 
+            var id = await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} created ConstituentDocument with id: {id}");
+
+            // TODO: сформировать ссылку на новый элемент
+            return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateConstituentDocumentDTO dto)
+        {
+            var command = mapper.Map<UpdateConstituentDocumentCommand>(dto);
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} updated ConstituentDocument with id: {dto.Id}");
+
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteConstituentDocumentCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} deleted ConstituentDocument with id: {id}");
+
+            return NoContent();
+        }
     }
 }
