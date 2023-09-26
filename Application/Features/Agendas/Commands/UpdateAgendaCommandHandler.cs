@@ -20,7 +20,7 @@ namespace Application.Features.Agendas.Commands
 
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.Agenda), request.Id);
-
+       
             entity.Description = request.Description;
             entity.Speakers = request.Speakers;
             entity.CoSpeakers = request.CoSpeakers;

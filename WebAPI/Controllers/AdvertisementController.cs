@@ -40,9 +40,41 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        private List<string> myfunc(List<string[]> input)
+        {
+            List<string> result = new List<string>();
+
+            foreach (string[] strings in input)
+            {
+                string newString = "";
+                
+                foreach (string str in strings)
+                {
+                    newString = newString + str;
+                }
+
+                result.Add(newString);   
+            }
+            return result;          
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<AdvertisementDTO>> Get(int id)
         {
+            var arr = new List<string[]>();
+
+            for (int i = 0; i < 100; i++)
+            {
+                arr.Add(
+                    new string[]
+                    {
+                        "a","b","c"
+                    }
+                );
+            }
+
+            var result = myfunc(arr);
+
             var advertisementQuery = new GetAdvertisementQuery
             {
                 Id = id
@@ -83,6 +115,7 @@ namespace WebAPI.Controllers
             var command = mapper.Map<UpdateAdvertisementCommand>(dto);
 
             await Mediator.Send(command);
+            // TODO: добавить заполнение нового списка неудаленными agenda с соответствующими этому advertisment id-шниками
 
             logger.LogInformation($"User {UserEmail} updated Advertisement with id: {dto.Id}");
 

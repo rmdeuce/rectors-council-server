@@ -20,8 +20,8 @@ namespace Application.Features.Agendas.Queries
 
         public async Task<AgendaListDTO> Handle(GetAgendaListByAdvertisementQuery request, CancellationToken cancellationToken)
         {
-            var query = await dbContext.Agendas.
-                Where(e => e.AdvertisementId == request.AdvertisementId && !e.IsDeleted)
+            var query = await dbContext.Agendas
+                .Where(e => e.AdvertisementId == request.AdvertisementId && !e.IsDeleted)
                 .OrderBy(e => e.UpdatedAt)
                 .ProjectTo<AgendaDTO>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
