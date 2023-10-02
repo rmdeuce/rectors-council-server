@@ -51,6 +51,7 @@ namespace Application.Features.Advertisement.Commands
                         agenda.CoSpeakers = agendaDTO.CoSpeakers;
                     }
                 }
+
                 result.Add(agenda);
             }
 
