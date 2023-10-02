@@ -4,6 +4,8 @@ using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Application.Common.Exceptions;
 using Application.Features.Agendas.Queries.DTO;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Linq;
 
 namespace Application.Features.Advertisement.Commands
 {
@@ -18,51 +20,43 @@ namespace Application.Features.Advertisement.Commands
 
         public async Task<Unit> Handle(UpdateAdvertisementCommand request, CancellationToken cancellationToken)
         {
-            var entity = await dbContext.Advertisements.FirstOrDefaultAsync(e => e.Id == request.Id);
+            var entity = await dbContext.Advertisements.Include(e => e.Agendas).FirstOrDefaultAsync(e => e.Id == request.Id);
 
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.Advertisement), request.Id);
 
             entity.Title = request.Title;
             entity.Description = request.Description;
-            foreach (var agendaDto in request.Agendas)
-            {     
-                if (agendaDto.AdvertisementId != entity.Id)
-                {  
-                    throw new Exception("This Agenda does not belong to this Advertisement");
-                }
-
-                entity.Agendas = GetAgendaList(request.Agendas);
-            }
+            entity.Agendas = UpdateAgendaListByAdvertisement(entity.Agendas, request.Agendas);
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
 
-        private List<Agenda> GetAgendaList(List<AgendaDTO> input)
+        private List<Agenda> UpdateAgendaListByAdvertisement(List<Agenda> agendaList, List<AgendaDTO> agendaDTOList)
         {
             List<Agenda> result = new List<Agenda>();
 
-            foreach (var agenda in input)
+            foreach (var agenda in agendaList)
             {
-                Agenda newAgenda = new Agenda
+                if (!agenda.IsDeleted)
                 {
-                    
-                    Id = agenda.Id,
-                    AdvertisementId = agenda.AdvertisementId,
-                    NewsId = agenda.NewsId,
-                    Description = agenda.Description,
-                    Speakers = agenda.Speakers,
-                    CoSpeakers = agenda.CoSpeakers,
-                };
+                    var agendaDTO = agendaDTOList.FirstOrDefault(a => a.Id == agenda.Id);
 
-                result.Add(newAgenda);
+                    if (agendaDTO != null)
+                    {
+                        agenda.NewsId = agendaDTO.NewsId;
+                        agenda.Description = agendaDTO.Description;
+                        agenda.Speakers = agendaDTO.Speakers;
+                        agenda.CoSpeakers = agendaDTO.CoSpeakers;
+                        agenda.AdvertisementId = agendaDTO.AdvertisementId;
+                    }
+                }
+                result.Add(agenda);
             }
 
             return result;
-        }
-
-        
+        }    
     }
 }
