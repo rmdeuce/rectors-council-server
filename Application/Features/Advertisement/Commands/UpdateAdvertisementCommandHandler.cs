@@ -46,11 +46,9 @@ namespace Application.Features.Advertisement.Commands
 
                     if (agendaDTO != null)
                     {
-                        agenda.NewsId = agendaDTO.NewsId;
                         agenda.Description = agendaDTO.Description;
                         agenda.Speakers = agendaDTO.Speakers;
                         agenda.CoSpeakers = agendaDTO.CoSpeakers;
-                        agenda.AdvertisementId = agendaDTO.AdvertisementId;
                     }
                 }
                 result.Add(agenda);
