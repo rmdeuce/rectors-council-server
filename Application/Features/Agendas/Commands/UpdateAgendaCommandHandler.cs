@@ -16,11 +16,12 @@ namespace Application.Features.Agendas.Commands
 
         public async Task<Unit> Handle(UpdateAgendaCommand request, CancellationToken cancellationToken)
         {
-            var entity = await dbContext.Agendas.FirstOrDefaultAsync(e => e.Id == request.Id);
+            var entity = await dbContext.Agendas.FirstOrDefaultAsync(e => e.Id == request.Id && !e.IsDeleted);
 
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.Agenda), request.Id);
 
+       
             entity.Description = request.Description;
             entity.Speakers = request.Speakers;
             entity.CoSpeakers = request.CoSpeakers;
