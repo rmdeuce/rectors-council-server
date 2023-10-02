@@ -16,6 +16,7 @@ namespace Application.Features.Agendas.Queries.DTO
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Agenda, AgendaDTO>();
+            profile.CreateMap<AgendaDTO, Agenda>();
         }
     }
 }

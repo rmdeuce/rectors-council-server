@@ -1,5 +1,6 @@
 ﻿using Application.Common.Mappings;
 using Application.Features.Advertisement.Commands;
+using Application.Features.Agendas.Queries.DTO;
 using AutoMapper;
 using Domain.Entities;
 
@@ -9,7 +10,7 @@ namespace WebAPI.Models.DTO.Advertisement
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<Agenda> Agendas { get; set; }
+        public List<AgendaDTO> Agendas { get; set; }
 
         public void Mapping(Profile profile)
         {
