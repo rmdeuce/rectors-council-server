@@ -1,4 +1,5 @@
-﻿using Application.Features.News.Commands;
+﻿using Application.Features.Advertisement.Commands;
+using Application.Features.News.Commands;
 using Application.Features.News.Queries;
 using Application.Features.News.Queries.DTO;
 using AutoMapper;
@@ -54,7 +55,7 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "Content manager")]
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] CreateNewsDTO dto )
+        public async Task<ActionResult<int>> Create([FromBody] CreateNewsDTO dto)
         {
             var command = mapper.Map<CreateNewsCommand>(dto);
 
@@ -74,6 +75,22 @@ namespace WebAPI.Controllers
             await Mediator.Send(command);
 
             logger.LogInformation($"User {UserEmail} updated News with id: {dto.Id}");
+
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteNewsCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} deleted News with id: {id}");
 
             return NoContent();
         }
