@@ -1,38 +1,38 @@
-﻿using MediatR;
-using Domain.Entities;
-using Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Application.Common.Exceptions;
+﻿using Application.Common.Exceptions;
 using Application.Features.Agendas.Queries.DTO;
+using Application.Interfaces;
+using Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Advertisement.Commands
+namespace Application.Features.News.Commands
 {
-    public class UpdateAdvertisementCommandHandler : IRequestHandler<UpdateAdvertisementCommand, Unit>
+    public class UpdateNewsCommandHandler : IRequestHandler<UpdateNewsCommand, Unit>
     {
         private readonly IAppDBContext dbContext;
 
-        public UpdateAdvertisementCommandHandler(IAppDBContext dbcontext)
+        public UpdateNewsCommandHandler(IAppDBContext dbContext)
         {
-            this.dbContext = dbcontext;
+            this.dbContext = dbContext;
         }
-
-        public async Task<Unit> Handle(UpdateAdvertisementCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateNewsCommand request, CancellationToken cancellationToken)
         {
-            var entity = await dbContext.Advertisements.Include(e => e.Agendas).FirstOrDefaultAsync(e => e.Id == request.Id);
+            var entity = await dbContext.News.Include(e => e.Agendas).FirstOrDefaultAsync(e => e.Id == request.Id);
 
             if (entity == null)
-                throw new NotFoundException(nameof(Domain.Entities.Advertisement), request.Id);
+                throw new NotFoundException(nameof(Domain.Entities.News), request.Id);
 
             entity.Title = request.Title;
+            entity.IconUrl = request.IconUrl;
             entity.Description = request.Description;
-            entity.Agendas = UpdateAgendaListByAdvertisement(entity.Agendas, request.Agendas);
+            entity.Agendas = UpdateAgendaListByNews(entity.Agendas, request.Agendas);
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
 
-        private List<Agenda> UpdateAgendaListByAdvertisement(List<Agenda> agendaList, List<AgendaDTO> agendaDTOList)
+        private List<Agenda> UpdateAgendaListByNews(List<Agenda> agendaList, List<AgendaDTO> agendaDTOList)
         {
             List<Agenda> result = new List<Agenda>();
 
@@ -54,6 +54,6 @@ namespace Application.Features.Advertisement.Commands
             }
 
             return result;
-        }    
+        }
     }
 }
