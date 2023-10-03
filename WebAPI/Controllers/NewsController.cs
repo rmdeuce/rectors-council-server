@@ -1,8 +1,11 @@
-﻿using Application.Features.News.Queries;
+﻿using Application.Features.News.Commands;
+using Application.Features.News.Queries;
 using Application.Features.News.Queries.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.DTO.News;
 
 namespace WebAPI.Controllers
 {
@@ -35,5 +38,33 @@ namespace WebAPI.Controllers
             var result = await Mediator.Send(query);
             return Ok(result);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<NewsDTO>> Get(int id)
+        {
+            var newsQuery = new GetNewsQuery
+            {
+                Id = id
+            };
+
+            var news = await Mediator.Send(newsQuery);
+
+            return Ok(news);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<ActionResult<int>> Create([FromBody] CreateNewsDTO dto )
+        {
+            var command = mapper.Map<CreateNewsCommand>(dto);
+
+            var id = await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} created News with id: {id}");
+
+            return Created("", id);
+        }
+
+
     }
 }
