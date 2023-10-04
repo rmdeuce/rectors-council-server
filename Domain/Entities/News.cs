@@ -12,6 +12,6 @@ namespace Domain.Entities
         public string[] IconUrl { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<Agenda> Agendas { get; set; } = new List<Agenda>();
+        public List<Agenda> Agendas { get; set; }
     }
 }
