@@ -12,7 +12,7 @@ namespace Application.Features.News.Commands
     {
         public string[] IconUrl { get; set; }
         public string Title { get; set; }
-        public string Descriptipon { get; set; }
+        public string Description { get; set; }
         public List<Agenda> Agendas { get; set; }
     }
 }

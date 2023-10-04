@@ -27,7 +27,7 @@ namespace Application.Features.News.Commands
             {
                 IconUrl = request.IconUrl,
                 Title = request.Title,
-                Description = request.Descriptipon,
+                Description = request.Description,
                 Agendas = mapper.Map<List<Agenda>>(request.Agendas)
             };
 
