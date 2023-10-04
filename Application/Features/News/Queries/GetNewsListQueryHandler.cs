@@ -12,9 +12,9 @@ namespace Application.Features.News.Queries
         private readonly IAppDBContext dbContext;
         private readonly IMapper mapper;
 
-        public GetNewsListQueryHandler(IAppDBContext dBContext, IMapper mapper)
+        public GetNewsListQueryHandler(IAppDBContext dbContext, IMapper mapper)
         {
-            this.dbContext = dBContext;
+            this.dbContext = dbContext;
             this.mapper = mapper;
         }
 

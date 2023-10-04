@@ -15,6 +15,7 @@ namespace Application.Features.News.Commands
         {
             this.dbContext = dbContext;
         }
+
         public async Task<Unit> Handle(UpdateNewsCommand request, CancellationToken cancellationToken)
         {
             var entity = await dbContext.News.Include(e => e.Agendas).FirstOrDefaultAsync(e => e.Id == request.Id);
