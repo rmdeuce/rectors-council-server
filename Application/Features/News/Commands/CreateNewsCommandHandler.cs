@@ -31,9 +31,9 @@ namespace Application.Features.News.Commands
                 Agendas = mapper.Map<List<Agenda>>(request.Agendas)
             };
 
-            dBContext.News.Add(news);
+            dbContext.News.Add(news);
 
-            await dBContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             return news.Id;
         }
