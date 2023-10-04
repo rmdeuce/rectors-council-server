@@ -9,18 +9,18 @@ namespace Application.Features.News.Queries
 {
     public class GetNewsListQueryHandler : IRequestHandler<GetNewsListQuery, NewsListDTO>
     {
-        private readonly IAppDBContext dBContext;
+        private readonly IAppDBContext dbContext;
         private readonly IMapper mapper;
 
         public GetNewsListQueryHandler(IAppDBContext dBContext, IMapper mapper)
         {
-            this.dBContext = dBContext;
+            this.dbContext = dBContext;
             this.mapper = mapper;
         }
 
         public async Task<NewsListDTO> Handle(GetNewsListQuery request, CancellationToken cancellationToken)
         {
-            var query = await dBContext.News
+            var query = await dbContext.News
                 .Where(e => !e.IsDeleted)
                 .OrderByDescending(e => e.UpdatedAt)
                 .Skip(request.Position)
@@ -28,7 +28,7 @@ namespace Application.Features.News.Queries
                 .ProjectTo<NewsPreviewDTO>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            var total = await dBContext.News.CountAsync(e => !e.IsDeleted);
+            var total = await dbContext.News.CountAsync(e => !e.IsDeleted);
 
             return new NewsListDTO
             {

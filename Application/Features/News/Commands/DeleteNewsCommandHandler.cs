@@ -21,7 +21,7 @@ namespace Application.Features.News.Commands
 
         public async Task<Unit> Handle(DeleteNewsCommand request, CancellationToken cancellationToken)
         {
-            var entity = await dbContext.News.FindAsync(new object[] {request.Id}, cancellationToken);
+            var entity = await dbContext.News.FindAsync(new object[] { request.Id }, cancellationToken);
 
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.News), request.Id);

@@ -12,12 +12,12 @@ namespace Application.Features.News.Commands
 {
     public class CreateNewsCommandHandler : IRequestHandler<CreateNewsCommand, int>
     {
-        private readonly IAppDBContext dBContext;
+        private readonly IAppDBContext dbContext;
         private readonly IMapper mapper;
 
         public CreateNewsCommandHandler(IAppDBContext dbContext, IMapper mapper)
         {
-            this.dBContext = dbContext;
+            this.dbContext = dbContext;
             this.mapper = mapper;
         }
 

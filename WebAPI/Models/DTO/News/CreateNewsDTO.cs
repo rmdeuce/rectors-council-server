@@ -10,7 +10,7 @@ namespace WebAPI.Models.DTO.News
     {
         public string[] IconUrl { get; set; }
         public string Title { get; set; }
-        public string Descriptipon { get; set; }
+        public string Description { get; set; }
         public List<AgendaDTO> Agendas { get; set; }
 
         public void Mapping(Profile profile)
