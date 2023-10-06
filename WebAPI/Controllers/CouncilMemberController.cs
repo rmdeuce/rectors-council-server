@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using Application.Features.Advertisement.Queries;
+using Application.Features.CouncilMember.Queries;
+using Application.Features.CouncilMember.Queries.DTO;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
@@ -13,7 +17,24 @@ namespace WebAPI.Controllers
             this.logger = loggerFactory.CreateLogger("Council member info");
         }
 
-        //public async Task<ActionResult<>>
+        [HttpGet("{page?}/{count?}")]
+        public async Task<ActionResult<CouncilMemberListDTO>> GetAll(int page = 0, int count = 10)
+        {
+            page = page > 0 ? page - 1 : 0;
+            count = count > 50 ? 50 : count;
+
+            var position = count * page;
+
+            var query = new GetCouncilMemberListQuery
+            {
+                Position = position,
+                Take = count
+            };
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
 
     }
 }

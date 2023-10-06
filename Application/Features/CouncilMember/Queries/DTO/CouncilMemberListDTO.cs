@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.CouncilMember.Queries.DTO
 {
-    internal class CouncilMemberListDTO
+    public class CouncilMemberListDTO
     {
+        public int Total { get; set; }
+
+        public IList<CouncilMemberDTO> CounsilMembers { get; set; }
     }
 }
