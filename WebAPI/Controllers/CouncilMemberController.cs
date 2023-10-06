@@ -36,5 +36,18 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CouncilMemberDTO>> Get(int id)
+        {
+            var councilMemberQuery = new GetCouncilMemberQuery
+            {
+                Id = id
+            };
+
+            var councilMember = await Mediator.Send(councilMemberQuery);
+
+            return Ok(councilMember);
+        }
+
     }
 }
