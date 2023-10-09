@@ -1,10 +1,16 @@
 ﻿using Domain.Entities;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Application.Features.CouncilMember.Commands
 {
-    public class CreateCouncilMemberCommand : IRequest<int>
+    public class UpdateCouncilMemberCommand : IRequest<Unit>
     {
+        public int Id { get; set; }
         public string FullName { get; set; }
         public string IconUrl { get; set; }
         public string ScienceDegree { get; set; }

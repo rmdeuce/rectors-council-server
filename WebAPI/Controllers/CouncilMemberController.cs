@@ -1,5 +1,4 @@
-﻿using Application.Features.Advertisement.Queries;
-using Application.Features.CouncilMember.Commands;
+﻿using Application.Features.CouncilMember.Commands;
 using Application.Features.CouncilMember.Queries;
 using Application.Features.CouncilMember.Queries.DTO;
 using AutoMapper;
@@ -63,6 +62,35 @@ namespace WebAPI.Controllers
             logger.LogInformation($"User {UserEmail} created Council member with id: {id}");
 
             return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateCouncilMemberDTO dto)
+        {
+            var command = mapper.Map<UpdateCouncilMemberCommand>(dto);
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} updated Council member with id: {dto.Id}");
+
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteCouncilMemberCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} deleted Council member with id: {id}");
+
+            return NoContent();
         }
 
     }

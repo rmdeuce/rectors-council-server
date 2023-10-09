@@ -2,7 +2,6 @@
 using Application.Features.CouncilMember.Commands;
 using AutoMapper;
 using Domain.Entities;
-using WebAPI.Models.DTO.Advertisement;
 
 namespace WebAPI.Models.DTO.CouncilMember
 {
