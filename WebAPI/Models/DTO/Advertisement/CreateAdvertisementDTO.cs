@@ -2,7 +2,6 @@
 using Application.Features.Advertisement.Commands;
 using Application.Features.Agendas.Queries.DTO;
 using AutoMapper;
-using Domain.Entities;
 
 namespace WebAPI.Models.DTO.Advertisement
 {
