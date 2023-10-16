@@ -1,4 +1,5 @@
-﻿using Application.Features.Councils.Queries;
+﻿using Application.Features.Advertisement.Queries;
+using Application.Features.Councils.Queries;
 using Application.Features.Councils.Queries.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,17 @@ namespace WebAPI.Controllers
             this.logger = loggerFactory.CreateLogger("Council info");
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        public async Task<ActionResult<CouncilListDTO>> GetAll()
+        {
+            var query = new GetCouncilListQuery();
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
+
+            [HttpGet("{id}")]
         public async Task<ActionResult<CouncilDTO>> Get(int id)
         {
             var query = new GetCouncilQuery
