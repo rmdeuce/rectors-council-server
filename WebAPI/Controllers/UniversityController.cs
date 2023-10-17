@@ -1,9 +1,11 @@
-﻿using Application.Features.Universities.Queries;
+﻿using Application.Features.Universities.Commands;
+using Application.Features.Universities.Queries;
 using Application.Features.Universities.Queries.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.DTO.University;
 
 namespace WebAPI.Controllers
 {
@@ -41,9 +43,18 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        //[Authorize(Roles = "Content manager")]
-        //[HttpPost]
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<ActionResult<int>> Create([FromBody] CreateUniversityDTO dto)
+        {
+            var command = mapper.Map<CreateUniversityCommand>(dto);
 
+            var id = await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} created University with id: {id}");
+
+            return Created("", id);
+        }
     }
 }
  
