@@ -55,11 +55,17 @@ namespace WebAPI.Controllers
             return Created("", id);
         }
 
-        //[Authorize(Roles = "Content manager")]
-        //[HttpPut]
-        //public async Task<IActionResult> Update([FromBody] UpdateCouncilDTO dto)
-        //{
+        [Authorize(Roles = "Content manager")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateCouncilDTO dto)
+        {
+            var command = mapper.Map<UpdateCouncilCommand>(dto);
 
-        //}
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} updated Council with id: {dto.Id}");
+
+            return NoContent();
+        }
     }
 }

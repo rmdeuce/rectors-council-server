@@ -9,7 +9,7 @@ namespace WebAPI.Models.DTO.Council
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<CouncilMemberDTO> CouncilMembers { get; set; }
+        public List<Domain.Entities.CouncilMember> CouncilMembers { get; set; }
 
         public void Mapping(Profile profile)
         {
