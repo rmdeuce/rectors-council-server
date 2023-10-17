@@ -23,6 +23,7 @@ namespace Application.Features.CouncilMember.Queries.DTO
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Domain.Entities.CouncilMember, CouncilMemberDTO>();
+            profile.CreateMap<CouncilMemberDTO, Domain.Entities.CouncilMember>();
         }
     }
 }

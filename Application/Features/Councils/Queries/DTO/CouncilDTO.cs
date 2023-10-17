@@ -13,6 +13,7 @@ namespace Application.Features.Councils.Queries.DTO
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Council, CouncilDTO>();
+            profile.CreateMap<CouncilDTO, Council>();
         }
     }
 }

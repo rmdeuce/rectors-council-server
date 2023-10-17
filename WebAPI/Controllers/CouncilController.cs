@@ -1,8 +1,10 @@
-﻿using Application.Features.Advertisement.Queries;
+﻿using Application.Features.Councils.Commands;
 using Application.Features.Councils.Queries;
 using Application.Features.Councils.Queries.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.DTO.Council;
 
 namespace WebAPI.Controllers
 {
@@ -27,7 +29,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-            [HttpGet("{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<CouncilDTO>> Get(int id)
         {
             var query = new GetCouncilQuery
@@ -39,5 +41,25 @@ namespace WebAPI.Controllers
 
             return Ok(result);
         }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<ActionResult<int>> Create([FromBody] CreateCouncilDTO dto)
+        {
+            var command = mapper.Map<CreateCouncilCommand>(dto);
+
+            var id = await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} created Council with id: {id}");
+
+            return Created("", id);
+        }
+
+        //[Authorize(Roles = "Content manager")]
+        //[HttpPut]
+        //public async Task<IActionResult> Update([FromBody] UpdateCouncilDTO dto)
+        //{
+
+        //}
     }
 }
