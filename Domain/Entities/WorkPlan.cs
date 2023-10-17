@@ -11,6 +11,6 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string Description { get; set; }
         public Council Council { get; set; }
-        public List<CouncilMember> ResponsibleMembers { get; set; } = new List<CouncilMember>();
+        public List<CouncilMember> ResponsibleMembers { get; set; }
     }
 }

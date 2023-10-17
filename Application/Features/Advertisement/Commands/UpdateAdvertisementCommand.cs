@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Features.Agendas.Queries.DTO;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Advertisement.Commands
@@ -8,6 +9,6 @@ namespace Application.Features.Advertisement.Commands
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<Agenda> Agendas { get; set; }
+        public List<AgendaDTO> Agendas { get; set; }
     }
 }
