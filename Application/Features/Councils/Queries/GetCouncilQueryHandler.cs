@@ -23,7 +23,7 @@ namespace Application.Features.Councils.Queries
             var entity = await dbContext.Councils.FirstOrDefaultAsync(e => e.Id == request.Id && !e.IsDeleted);
 
             if (entity == null)
-                throw new NotFoundException(nameof(Domain.Entities.Agenda), request.Id);
+                throw new NotFoundException(nameof(Domain.Entities.Council), request.Id);
 
             return mapper.Map<CouncilDTO>(entity);
         }

@@ -1,6 +1,8 @@
 ﻿using Application.Features.Universities.Queries;
 using Application.Features.Universities.Queries.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -25,6 +27,22 @@ namespace WebAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UniversityDTO>> Get(int id)
+        {
+            var query = new GetUniversityQuery
+            {
+                Id = id
+            };
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
+
+        //[Authorize(Roles = "Content manager")]
+        //[HttpPost]
 
     }
 }
