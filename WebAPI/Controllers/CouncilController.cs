@@ -67,5 +67,21 @@ namespace WebAPI.Controllers
 
             return NoContent();
         }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteCouncilCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} deleted Council with id: {id}");
+
+            return NoContent();
+        }
     }
 }

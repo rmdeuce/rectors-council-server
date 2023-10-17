@@ -1,5 +1,4 @@
 ﻿using Application.Common.Mappings;
-using Application.Features.CouncilMember.Queries.DTO;
 using Application.Features.Councils.Commands;
 using AutoMapper;
 

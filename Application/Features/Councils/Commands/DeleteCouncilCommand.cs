@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace Application.Features.Councils.Commands
 {
-    internal class DeleteCouncilCommand
+    public class DeleteCouncilCommand : IRequest<Unit>
     {
+        public int Id { get; set; }
     }
 }

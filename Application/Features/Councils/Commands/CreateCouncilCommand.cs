@@ -1,5 +1,4 @@
-﻿using Application.Features.CouncilMember.Queries.DTO;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.Features.Councils.Commands
 {
