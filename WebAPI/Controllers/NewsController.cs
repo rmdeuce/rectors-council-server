@@ -1,16 +1,13 @@
-﻿using Application.Features.Advertisement.Commands;
-using Application.Features.News.Commands;
+﻿using Application.Features.News.Commands;
 using Application.Features.News.Queries;
 using Application.Features.News.Queries.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.DTO.News;
 
 namespace WebAPI.Controllers
 {
-
     public class NewsController : BaseController
     {
         private readonly IMapper mapper;
