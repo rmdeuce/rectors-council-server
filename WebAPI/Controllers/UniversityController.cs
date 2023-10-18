@@ -55,6 +55,19 @@ namespace WebAPI.Controllers
 
             return Created("", id);
         }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateUniversityDTO dto)
+        {
+            var command = mapper.Map<UpdateUniversityCommand>(dto);
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} updated University with id: {dto.Id}");
+
+            return NoContent();
+        }
     }
 }
  
