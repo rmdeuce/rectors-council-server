@@ -3,7 +3,6 @@ using Application.Features.Universities.Queries;
 using Application.Features.Universities.Queries.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.DTO.University;
 
@@ -65,6 +64,22 @@ namespace WebAPI.Controllers
             await Mediator.Send(command);
 
             logger.LogInformation($"User {UserEmail} updated University with id: {dto.Id}");
+
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteUniversityCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} deleted University with id: {id}");
 
             return NoContent();
         }
