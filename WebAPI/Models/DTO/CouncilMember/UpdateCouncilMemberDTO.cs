@@ -13,7 +13,7 @@ namespace WebAPI.Models.DTO.CouncilMember
         public string ScienceDegree { get; set; }
         public string Post { get; set; }
         public Domain.Entities.University University { get; set; }
-        public CouncilPosition CouncilPosition { get; set; }
+        public Domain.Entities.CouncilPosition CouncilPosition { get; set; }
         public CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
         public List<PhoneNumber> PhoneNumbers { get; set; }
         public List<Domain.Entities.Council> Councils { get; set; }
