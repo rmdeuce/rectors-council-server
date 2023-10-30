@@ -13,7 +13,7 @@ namespace Application.Features.CouncilMember.Queries.DTO
         public string Post { get; set; }
         public University University { get; set; }
         public Domain.Entities.CouncilPosition CouncilPosition { get; set; }
-        public CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
+        public Domain.Entities.CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
         public List<PhoneNumber> PhoneNumbers { get; set; }
         public List<Council> Councils { get; set; }
         public List<WorkPlan> WorkPlans { get; set; }
