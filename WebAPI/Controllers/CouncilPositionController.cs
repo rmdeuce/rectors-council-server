@@ -1,7 +1,6 @@
 ﻿using Application.Features.CouncilPosition.Commands;
 using Application.Features.CouncilPosition.Queries;
 using Application.Features.CouncilPosition.Queries.DTO;
-using Application.Features.Councils.Commands;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +42,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        //[Authorize(Roles = "Content manager")]
+        [Authorize(Roles = "Content manager")]
         [HttpPost]
         public async Task<ActionResult<int>> Create([FromBody] CreateCouncilPositionDTO dto)
         {
@@ -55,5 +54,19 @@ namespace WebAPI.Controllers
 
             return Created("", id);
         }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateCouncilPositionDTO dto)
+        {
+            var command = mapper.Map<UpdateCouncilPositionCommand>(dto);
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} updated Council position with id: {dto.Id}");
+
+            return NoContent();
+        }
+
     }
 }
