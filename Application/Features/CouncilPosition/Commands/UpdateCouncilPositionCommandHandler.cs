@@ -13,6 +13,7 @@ namespace Application.Features.CouncilPosition.Commands
         {
             this.dbContext = dbcontext;
         }
+
         public async Task<Unit> Handle(UpdateCouncilPositionCommand request, CancellationToken cancellationToken)
         {
             var entity = await dbContext.CouncilPositions.FirstOrDefaultAsync(e => e.Id == request.Id);
