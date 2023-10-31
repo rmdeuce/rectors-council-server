@@ -1,7 +1,11 @@
-﻿using Application.Features.CouncilMemberUniversityPosition.Queries;
+﻿using Application.Features.CouncilMemberUniversityPosition.Commands;
+using Application.Features.CouncilMemberUniversityPosition.Queries;
 using Application.Features.CouncilMemberUniversityPosition.Queries.DTO;
 using AutoMapper;
+using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.DTO.CouncilMemberUniversityPosition;
 
 namespace WebAPI.Controllers
 {
@@ -37,6 +41,19 @@ namespace WebAPI.Controllers
             var result = await Mediator.Send(query);
 
             return Ok(result);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<ActionResult<int>> Create([FromBody] CreateCouncilMemberUniversityPositionDTO dto)
+        {
+            var command = mapper.Map<CreateCouncilMemberUniversityPositionCommand>(dto);
+
+            var id = await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} created Council member university position with id: {id}");
+
+            return Created("", id);
         }
     }
 }

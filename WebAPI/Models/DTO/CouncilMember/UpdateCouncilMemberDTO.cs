@@ -14,7 +14,7 @@ namespace WebAPI.Models.DTO.CouncilMember
         public string Post { get; set; }
         public Domain.Entities.University University { get; set; }
         public Domain.Entities.CouncilPosition CouncilPosition { get; set; }
-        public CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
+        public Domain.Entities.CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
         public List<PhoneNumber> PhoneNumbers { get; set; }
         public List<Domain.Entities.Council> Councils { get; set; }
         public List<WorkPlan> WorkPlans { get; set; }
