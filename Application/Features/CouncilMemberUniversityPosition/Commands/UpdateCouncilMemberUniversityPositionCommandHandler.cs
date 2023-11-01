@@ -26,7 +26,6 @@ namespace Application.Features.CouncilMemberUniversityPosition.Commands
             await dbContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
-
         }
     }
 }
