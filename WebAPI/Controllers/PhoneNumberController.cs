@@ -1,5 +1,6 @@
 ﻿using Application.Features.PhoneNumber.Commands;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.DTO.PhoneNumber;
 
@@ -16,6 +17,7 @@ namespace WebAPI.Controllers
             this.logger = loggerFactory.CreateLogger("Phone number info");
         }
 
+        [Authorize(Roles = "Content manager")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdatePhoneNumberDTO dto)
         {
@@ -24,6 +26,22 @@ namespace WebAPI.Controllers
             await Mediator.Send(command);
 
             logger.LogInformation($"User{UserEmail} updated Phone number with id: {dto.Id}");
+
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeletePhoneNumberCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} deleted Phone number with id: {id}");
 
             return NoContent();
         }
