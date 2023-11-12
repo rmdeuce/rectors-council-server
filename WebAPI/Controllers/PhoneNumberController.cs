@@ -16,6 +16,19 @@ namespace WebAPI.Controllers
             this.mapper = mapper;
             this.logger = loggerFactory.CreateLogger("Phone number info");
         }
+        
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<ActionResult<int>> Create([FromBody] CreatePhoneNumberDTO dto)
+        {
+            var command = mapper.Map<CreatePhoneNumberCommand>(dto);
+
+            var id = await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} created PhoneNumber position with id: {id}");
+
+            return Created("", id);
+        }
 
         [Authorize(Roles = "Content manager")]
         [HttpPut]
