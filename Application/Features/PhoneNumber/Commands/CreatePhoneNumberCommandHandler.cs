@@ -19,7 +19,6 @@ namespace Application.Features.PhoneNumber.Commands
         {
             var phoneNumber = new Domain.Entities.PhoneNumber
             {
-                Id = request.Id,
                 Value = request.Value,
                 IsFax = request.IsFax,
                 IsTelegram = request.IsTelegram,

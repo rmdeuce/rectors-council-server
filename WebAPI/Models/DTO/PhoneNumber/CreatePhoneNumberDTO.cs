@@ -6,7 +6,6 @@ namespace WebAPI.Models.DTO.PhoneNumber
 {
     public class CreatePhoneNumberDTO : IMapWith<CreatePhoneNumberCommand>
     {
-        public int Id { get; set; }
         public string Value { get; set; }
         public bool IsFax { get; set; }
         public bool IsWhatsApp { get; set; }
