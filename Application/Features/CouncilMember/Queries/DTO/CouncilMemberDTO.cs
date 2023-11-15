@@ -1,4 +1,5 @@
 ﻿using Application.Common.Mappings;
+using Application.Features.PhoneNumber.Queries.DTO;
 using AutoMapper;
 using Domain.Entities;
 
@@ -14,7 +15,7 @@ namespace Application.Features.CouncilMember.Queries.DTO
         public University University { get; set; }
         public Domain.Entities.CouncilPosition CouncilPosition { get; set; }
         public Domain.Entities.CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
-        public List<Domain.Entities.PhoneNumber> PhoneNumbers { get; set; }
+        public List<PhoneNumberDTO> PhoneNumbers { get; set; }
         public List<Council> Councils { get; set; }
         public List<WorkPlan> WorkPlans { get; set; }
         public DateTime CreatedAt { get; set; }

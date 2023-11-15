@@ -22,7 +22,8 @@ namespace Application.Features.PhoneNumber.Commands
                 Value = request.Value,
                 IsFax = request.IsFax,
                 IsTelegram = request.IsTelegram,
-                IsWhatsApp = request.IsWhatsApp
+                IsWhatsApp = request.IsWhatsApp,
+                CouncilMemberId = request.CouncilMemberId
             };
 
             dbContext.PhoneNumbers.Add(phoneNumber);

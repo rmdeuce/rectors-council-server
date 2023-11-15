@@ -1,11 +1,11 @@
 ﻿using Application.Common.Mappings;
-using Application.Features.PhoneNumber.Commands;
 using AutoMapper;
 
-namespace WebAPI.Models.DTO.PhoneNumber
+namespace Application.Features.PhoneNumber.Queries.DTO
 {
-    public class CreatePhoneNumberDTO : IMapWith<CreatePhoneNumberCommand>
+    public class PhoneNumberDTO : IMapWith<Domain.Entities.PhoneNumber>
     {
+        public int Id { get; set; }
         public string Value { get; set; }
         public bool IsFax { get; set; }
         public bool IsWhatsApp { get; set; }
@@ -14,7 +14,8 @@ namespace WebAPI.Models.DTO.PhoneNumber
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<CreatePhoneNumberDTO, CreatePhoneNumberCommand>();
+            profile.CreateMap<Domain.Entities.PhoneNumber, PhoneNumberDTO>();
+            profile.CreateMap<PhoneNumberDTO, Domain.Entities.PhoneNumber>();
         }
     }
 }
