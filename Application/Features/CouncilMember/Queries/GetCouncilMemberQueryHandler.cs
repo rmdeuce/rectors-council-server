@@ -19,7 +19,14 @@ namespace Application.Features.CouncilMember.Queries
         }
         public async Task<CouncilMemberDTO> Handle(GetCouncilMemberQuery request, CancellationToken cancellationToken)
         {
-            var entity = await dbContext.CouncilMembers.Include(e => e.PhoneNumbers).FirstOrDefaultAsync(e => e.Id == request.Id && !e.IsDeleted);
+            var entity = await dbContext.CouncilMembers
+                .Include(e => e.University)
+                .Include(e => e.CouncilPosition)
+                .Include(e => e.CouncilMemberUniversityPosition)
+                .Include(e => e.PhoneNumbers)
+                .Include(e => e.Councils)
+                .Include(e => e.WorkPlans)
+                .FirstOrDefaultAsync(e => e.Id == request.Id && !e.IsDeleted);
 
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.CouncilMember), request.Id);
