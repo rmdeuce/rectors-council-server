@@ -16,7 +16,7 @@ namespace Application.Features.CouncilMember.Queries.DTO
         public Domain.Entities.CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
         public List<PhoneNumber> PhoneNumbers { get; set; }
         public List<Council> Councils { get; set; }
-        public List<WorkPlan> WorkPlans { get; set; }
+        public List<Domain.Entities.WorkPlan> WorkPlans { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
