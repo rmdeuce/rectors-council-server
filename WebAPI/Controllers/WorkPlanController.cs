@@ -1,7 +1,10 @@
-﻿using Application.Features.WorkPlan.Queries;
+﻿using Application.Features.WorkPlan.Commands;
+using Application.Features.WorkPlan.Queries;
 using Application.Features.WorkPlan.Queries.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.DTO.WorkPlan;
 
 namespace WebAPI.Controllers
 {
@@ -46,6 +49,19 @@ namespace WebAPI.Controllers
             var result = await Mediator.Send(query);
 
             return Ok(result);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<ActionResult<int>> Create([FromBody] CreateWorkPlanDTO dto)
+        {
+            var command = mapper.Map<CreateWorkPlanCommand>(dto);
+
+            var id = await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} created WorkPlan with id: {id}");
+
+            return Created("", id);
         }
 
     }
