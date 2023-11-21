@@ -35,5 +35,18 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<WorkPlanDTO>> Get(int id)
+        {
+            var query = new GetWorkPlanQuery
+            {
+                Id = id
+            };
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
+
     }
 }
