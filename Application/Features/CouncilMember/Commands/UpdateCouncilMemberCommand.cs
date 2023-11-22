@@ -18,7 +18,7 @@ namespace Application.Features.CouncilMember.Commands
         public University University { get; set; }
         public Domain.Entities.CouncilPosition CouncilPosition { get; set; }
         public Domain.Entities.CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
-        public List<PhoneNumber> PhoneNumbers { get; set; }
+        public List<Domain.Entities.PhoneNumber> PhoneNumbers { get; set; }
         public List<Council> Councils { get; set; }
         public List<Domain.Entities.WorkPlan> WorkPlans { get; set; }
     }

@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Application.Features.PhoneNumber.Commands
 {
-    [Table("PhoneNumbers")]
-    public class PhoneNumber : BaseEntity
+    public class CreatePhoneNumberCommand : IRequest<int>
     {
         public int Id { get; set; }
         public string Value { get; set; }
