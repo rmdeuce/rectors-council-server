@@ -16,7 +16,7 @@ namespace WebAPI.Models.DTO.CouncilMember
         public Domain.Entities.CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
         public List<Domain.Entities.PhoneNumber> PhoneNumbers { get; set; }
         public List<Domain.Entities.Council> Councils { get; set; }
-        public List<WorkPlan> WorkPlans { get; set; }
+        public List<Domain.Entities.WorkPlan> WorkPlans { get; set; }
 
         public void Mapping(Profile profile)
         {

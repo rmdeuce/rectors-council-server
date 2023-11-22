@@ -1,4 +1,4 @@
-﻿using Application.Common.Mappings;
+using Application.Common.Mappings;
 using Application.Features.Councils.Queries.DTO;
 using Application.Features.PhoneNumber.Queries.DTO;
 using Application.Features.Universities.Queries.DTO;
@@ -19,7 +19,7 @@ namespace Application.Features.CouncilMember.Queries.DTO
         public Domain.Entities.CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
         public List<PhoneNumberDTO> PhoneNumbers { get; set; }
         public List<CouncilDTO> Councils { get; set; }
-        public List<WorkPlan> WorkPlans { get; set; }
+        public List<Domain.Entities.WorkPlan> WorkPlans { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
