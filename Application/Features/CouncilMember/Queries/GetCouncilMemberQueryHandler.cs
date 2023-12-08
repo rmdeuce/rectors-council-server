@@ -22,10 +22,6 @@ namespace Application.Features.CouncilMember.Queries
         public async Task<CouncilMemberDTO> Handle(GetCouncilMemberQuery request, CancellationToken cancellationToken)
         {
             var entity = await dbContext.CouncilMembers
-                .Include(e => e.University)
-                .Include(e => e.CouncilPosition)
-                .Include(e => e.CouncilMemberUniversityPosition)
-                .Include(e => e.PhoneNumbers)
                 .Where(e => e.Id == request.Id && !e.IsDeleted)
                 .Select(c => new Domain.Entities.CouncilMember
                 {
