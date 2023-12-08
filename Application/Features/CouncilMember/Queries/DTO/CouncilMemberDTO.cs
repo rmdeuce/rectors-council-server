@@ -1,7 +1,10 @@
 using Application.Common.Mappings;
+using Application.Features.CouncilMemberUniversityPosition.Queries.DTO;
+using Application.Features.CouncilPosition.Queries.DTO;
 using Application.Features.Councils.Queries.DTO;
 using Application.Features.PhoneNumber.Queries.DTO;
 using Application.Features.Universities.Queries.DTO;
+using Application.Features.WorkPlan.Queries.DTO;
 using AutoMapper;
 using Domain.Entities;
 
@@ -15,13 +18,11 @@ namespace Application.Features.CouncilMember.Queries.DTO
         public string ScienceDegree { get; set; }
         public string Post { get; set; }
         public UniversityDTO University { get; set; }
-        public Domain.Entities.CouncilPosition CouncilPosition { get; set; }
-        public Domain.Entities.CouncilMemberUniversityPosition CouncilMemberUniversityPosition { get; set; }
+        public CouncilPositionDTO CouncilPosition { get; set; }
+        public CouncilMemberUniversityPositionDTO CouncilMemberUniversityPosition { get; set; }
         public List<PhoneNumberDTO> PhoneNumbers { get; set; }
         public List<CouncilDTO> Councils { get; set; }
-        public List<Domain.Entities.WorkPlan> WorkPlans { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public List<WorkPlanDTO> WorkPlans { get; set; }
 
         public void Mapping(Profile profile)
         {

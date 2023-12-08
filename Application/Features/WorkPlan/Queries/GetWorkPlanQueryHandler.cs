@@ -22,8 +22,29 @@ namespace Application.Features.WorkPlan.Queries
         public async Task<WorkPlanDTO> Handle(GetWorkPlanQuery request, CancellationToken cancellationToken)
         {
             var entity = await dbContext.WorkPlans
-                .Include(e => e.ResponsibleMembers)
-                .FirstOrDefaultAsync(e => e.Id == request.Id && !e.IsDeleted);
+                .Where(e => e.Id == request.Id && !e.IsDeleted)
+                .Select(c => new Domain.Entities.WorkPlan
+                {
+                    Id = c.Id,
+                    Description = c.Description,
+                    Council = c.Council,
+                    ResponsibleMembers = c
+                        .ResponsibleMembers
+                        .Select(e => new Domain.Entities.CouncilMember
+                        {
+                            Id = e.Id,
+                            FullName = e.FullName,
+                            IconUrl = e.IconUrl,
+                            ScienceDegree = e.ScienceDegree,
+                            Post = e.Post,
+                            University = e.University,
+                            CouncilPosition = e.CouncilPosition,
+                            CouncilMemberUniversityPosition = e.CouncilMemberUniversityPosition,
+                            PhoneNumbers = e.PhoneNumbers
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
 
             if (entity == null)
                 throw new NotFoundException(nameof(Domain.Entities.WorkPlan), request.Id);

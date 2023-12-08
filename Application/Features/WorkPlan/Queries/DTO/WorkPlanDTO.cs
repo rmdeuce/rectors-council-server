@@ -1,4 +1,6 @@
 ﻿using Application.Common.Mappings;
+using Application.Features.CouncilMember.Queries.DTO;
+using Application.Features.Councils.Queries.DTO;
 using AutoMapper;
 using Domain.Entities;
 
@@ -8,8 +10,8 @@ namespace Application.Features.WorkPlan.Queries.DTO
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public Council Council { get; set; }
-        public List<Domain.Entities.CouncilMember> ResponsibleMembers { get; set; }
+        public CouncilDTO Council { get; set; }
+        public List<CouncilMemberDTO> ResponsibleMembers { get; set; }
 
         public void Mapping(Profile profile)
         {

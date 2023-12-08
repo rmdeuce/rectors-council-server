@@ -29,10 +29,10 @@ namespace WebAPI
 
             AddSwaggerWithAuth(builder);
 
-            builder.Services.AddControllers().AddJsonOptions(options =>
+            /*builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            });
+            });*/
 
             builder.Services.AddAutoMapper(config =>
             {
