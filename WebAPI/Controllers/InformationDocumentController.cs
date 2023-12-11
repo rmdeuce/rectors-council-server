@@ -35,5 +35,19 @@ namespace WebAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<InformationDocumentDTO>> Get(int id)
+        {
+            var informationDocumentQuery = new GetInformationDocumentQuery
+            {
+                Id = id
+            };
+
+            var informationDocument = await Mediator.Send(informationDocumentQuery);
+
+            return Ok(informationDocument);
+        }
+
     }
 }
