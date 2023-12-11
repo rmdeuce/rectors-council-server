@@ -1,11 +1,13 @@
 ﻿using Application.Features.InformationDocument.Commands;
 using Application.Features.InformationDocument.Queries;
 using Application.Features.InformationDocument.Queries.DTO;
+using Application.Features.News.Commands;
 using Application.Features.News.Queries.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.DTO.InformationDocument;
+using WebAPI.Models.DTO.News;
 
 namespace WebAPI.Controllers
 {
@@ -63,6 +65,19 @@ namespace WebAPI.Controllers
             logger.LogInformation($"User {UserEmail} created Information document with id {id}");
 
             return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateInfromationDocumentDTO dto)
+        {
+            var command = mapper.Map<UpdateInformationDocumentCommand>(dto);
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} updated InformationDocument with id: {dto.Id}");
+
+            return NoContent();
         }
 
     }
