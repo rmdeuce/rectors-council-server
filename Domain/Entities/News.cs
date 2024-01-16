@@ -9,7 +9,7 @@ namespace Domain.Entities
     public class News : BaseEntity
     {
         public int Id { get; set; }
-        public string[] IconUrl { get; set; }
+        public List<string> PhotosUrl { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<Agenda> Agendas { get; set; }

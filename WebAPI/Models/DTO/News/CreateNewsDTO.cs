@@ -8,7 +8,7 @@ namespace WebAPI.Models.DTO.News
 {
     public class CreateNewsDTO : IMapWith<CreateNewsCommand>
     {
-        public string[] IconUrl { get; set; }
+        public List<string> PhotosUrl { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<AgendaDTO> Agendas { get; set; }
