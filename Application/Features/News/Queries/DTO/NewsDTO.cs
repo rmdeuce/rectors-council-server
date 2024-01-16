@@ -12,7 +12,7 @@ namespace Application.Features.News.Queries.DTO
     public class NewsDTO : IMapWith<Domain.Entities.News>
     {
         public int Id { get; set; }
-        public string[] IconUrl { get; set; }
+        public List<string> PhotosUrl { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<Agenda> Agendas { get; set; }
