@@ -10,6 +10,7 @@ namespace WebAPI.Models.DTO.University
         public string Name { get; set; }
         public string IconUrl { get; set; }
         public string Description { get; set; }
+        public List<string> PhotosUrl { get; set; }
         public string Link { get; set; }
 
         public void Mapping(Profile profile)
