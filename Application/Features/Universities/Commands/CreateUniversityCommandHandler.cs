@@ -27,6 +27,7 @@ namespace Application.Features.Universities.Commands
                 Name = request.Name,
                 IconUrl = request.IconUrl,
                 Description = request.Description,
+                PhotosUrl = request.PhotosUrl,
                 Link = request.Link
             };
 

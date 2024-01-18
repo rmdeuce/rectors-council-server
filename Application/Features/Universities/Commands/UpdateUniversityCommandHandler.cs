@@ -24,6 +24,7 @@ namespace Application.Features.Universities.Commands
             entity.IconUrl = request.IconUrl;
             entity.Name = request.Name;
             entity.Description = request.Description;
+            entity.PhotosUrl = request.PhotosUrl;
             entity.Link = request.Link;
 
             await dbContext.SaveChangesAsync(cancellationToken);
