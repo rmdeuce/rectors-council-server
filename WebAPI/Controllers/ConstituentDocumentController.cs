@@ -4,6 +4,7 @@ using Application.Features.ConstituentDocuments.Queries.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using WebAPI.Models.DTO.ConstituentDocument;
 
 namespace WebAPI.Controllers
@@ -63,6 +64,42 @@ namespace WebAPI.Controllers
 
             // TODO: сформировать ссылку на новый элемент
             return Created("", id);
+        }
+
+        //[Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        {
+            foreach (var file in files)
+            {
+
+                var fileName = Path.GetFileName(file.FileName);
+
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFile(IFormFile file)
+        {
+
+            var fileName = Path.GetFileName(file.FileName);
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Ok();
         }
 
         [Authorize(Roles = "Content manager")]
