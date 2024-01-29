@@ -1,7 +1,9 @@
 ﻿using Application.Features.ConstituentDocuments.Commands;
 using Application.Features.ConstituentDocuments.Queries;
 using Application.Features.ConstituentDocuments.Queries.DTO;
+using Application.Features.UploadableFile;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
@@ -67,39 +69,30 @@ namespace WebAPI.Controllers
         }
 
         //[Authorize(Roles = "Content manager")]
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> AddFiles(List<IFormFile> files)
         {
+            var connectio = Configuration["FileUploadPath"];
+            var filePaths = new List<string>();
+
             foreach (var file in files)
             {
-
-                var fileName = Path.GetFileName(file.FileName);
-
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
+                var filePath = await Mediator.Send(new UploadFileCommand(file));
+                filePaths.Add(filePath);
             }
 
-            return Ok();
-        }
+            return Ok(filePaths);
+        }*/
 
+        //[Authorize(Roles = "Content manager")]
         [HttpPost]
         public async Task<IActionResult> AddFile(IFormFile file)
         {
-
             var fileName = Path.GetFileName(file.FileName);
+            var filePath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument", fileName);
+            var command = new UploadFileCommand(file, filePath);
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            return Ok();
+            return Ok(new { FilePath = filePath });
         }
 
         [Authorize(Roles = "Content manager")]

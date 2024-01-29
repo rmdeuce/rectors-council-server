@@ -27,7 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="FilesUpload\ConstituentDocument\" />
     <Folder Include="Uploads\" />
+    <Folder Include="ConstituentDocument\" />
   </ItemGroup>
 
 </Project>
