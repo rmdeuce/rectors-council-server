@@ -11,13 +11,11 @@ namespace Application.Features.UploadableFile
     public class UploadFileCommand : IRequest<string>
     {
         public IFormFile File { get; }
-        //public string? FilePath { get; }
         public string? DirectoryPath { get; }
 
         public UploadFileCommand(IFormFile file, string? directoryPath)
         {
             File = file;
-            //FilePath = filePath;
             DirectoryPath = directoryPath;
         }
     }
