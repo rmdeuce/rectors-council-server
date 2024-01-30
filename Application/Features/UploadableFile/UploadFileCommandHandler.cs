@@ -1,10 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Application.Features.UploadableFile
 {
@@ -14,7 +9,12 @@ namespace Application.Features.UploadableFile
         {
             var file = request.File;
 
-            var filePath = request.FilePath;
+            var directoryPath = request.DirectoryPath;
+
+            var filePath = Path.Combine(directoryPath, Path.GetFileName(file.FileName));
+
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {

@@ -68,31 +68,37 @@ namespace WebAPI.Controllers
             return Created("", id);
         }
 
-        //[Authorize(Roles = "Content manager")]
-        /*[HttpPost]
-        public async Task<IActionResult> AddFiles(List<IFormFile> files)
-        {
-            var connectio = Configuration["FileUploadPath"];
-            var filePaths = new List<string>();
-
-            foreach (var file in files)
-            {
-                var filePath = await Mediator.Send(new UploadFileCommand(file));
-                filePaths.Add(filePath);
-            }
-
-            return Ok(filePaths);
-        }*/
-
-        //[Authorize(Roles = "Content manager")]
+        [Authorize(Roles = "Content manager")]
         [HttpPost]
         public async Task<IActionResult> AddFile(IFormFile file)
         {
             var fileName = Path.GetFileName(file.FileName);
-            var filePath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument", fileName);
-            var command = new UploadFileCommand(file, filePath);
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument");
 
-            return Ok(new { FilePath = filePath });
+            var command = new UploadFileCommand(file, directoryPath);
+
+            await Mediator.Send(command);
+
+            return Ok(fileName);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        {
+            var filePaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument");
+
+                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+
+                filePaths.Add(fileName);
+            }
+
+            return Ok(filePaths);
         }
 
         [Authorize(Roles = "Content manager")]

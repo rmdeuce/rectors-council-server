@@ -1,6 +1,7 @@
 ﻿using Application.Features.CouncilMember.Commands;
 using Application.Features.CouncilMember.Queries;
 using Application.Features.CouncilMember.Queries.DTO;
+using Application.Features.UploadableFile;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,39 @@ namespace WebAPI.Controllers
             logger.LogInformation($"User {UserEmail} created Council member with id: {id}");
 
             return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddFile(IFormFile file)
+        {
+            var fileName = Path.GetFileName(file.FileName);
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "CouncilMember");
+
+            var command = new UploadFileCommand(file, directoryPath);
+
+            await Mediator.Send(command);
+
+            return Ok(fileName);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        {
+            var filePaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "CouncilMember");
+
+                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+
+                filePaths.Add(fileName);
+            }
+
+            return Ok(filePaths);
         }
 
         [Authorize(Roles = "Content manager")]

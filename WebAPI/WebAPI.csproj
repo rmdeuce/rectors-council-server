@@ -27,9 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FilesUpload\ConstituentDocument\" />
-    <Folder Include="Uploads\" />
-    <Folder Include="ConstituentDocument\" />
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
