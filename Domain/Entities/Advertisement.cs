@@ -12,5 +12,6 @@ namespace Domain.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public List<Agenda> Agendas { get; set; }
+        public DateTime MeetingDate { get; set; }
     }
 }

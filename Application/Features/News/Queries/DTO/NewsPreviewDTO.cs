@@ -9,7 +9,9 @@ namespace Application.Features.News.Queries.DTO
         public string IconUrl { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        
+        public DateTime UpdatedAt { get; set; }
+        public DateTime MeetingDate { get; set; }
+
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Domain.Entities.News, NewsPreviewDTO>();

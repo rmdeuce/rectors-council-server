@@ -26,6 +26,7 @@ namespace Application.Features.Advertisement.Commands
             entity.Title = request.Title;
             entity.Description = request.Description;
             entity.Agendas = UpdateAgendaListByAdvertisement(entity.Agendas, request.Agendas);
+            entity.MeetingDate = request.MeetingDate;
 
             await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -26,6 +26,7 @@ namespace Application.Features.News.Commands
             entity.Title = request.Title;
             entity.PhotosUrl = request.PhotosUrl;
             entity.Description = request.Description;
+            entity.MeetingDate = request.MeetingDate;
             entity.Agendas = UpdateAgendaListByNews(entity.Agendas, request.Agendas);
 
             await dbContext.SaveChangesAsync(cancellationToken);

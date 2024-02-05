@@ -13,6 +13,7 @@ namespace WebAPI.Models.DTO.News
         public string Description { get; set; }
         public List<string> PhotosUrl { get; set; }
         public List<AgendaDTO> Agendas { get; set; }
+        public DateTime MeetingDate { get; set; }
 
         public void Mapping(Profile profile)
         {
