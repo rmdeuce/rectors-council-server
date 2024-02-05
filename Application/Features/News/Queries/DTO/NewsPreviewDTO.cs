@@ -9,7 +9,6 @@ namespace Application.Features.News.Queries.DTO
         public string IconUrl { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<string> PhotosUrl { get; set; }
         public DateTime UpdatedAt { get; set; }
 
         public void Mapping(Profile profile)
