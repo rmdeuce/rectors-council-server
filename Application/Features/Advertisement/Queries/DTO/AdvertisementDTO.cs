@@ -11,6 +11,7 @@ namespace Application.Features.Advertisement.Queries.DTO
         public string Description { get; set; }
         public List<AgendaDTO> Agendas { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public DateTime MeetingDate { get; set; }
 
         public void Mapping(Profile profile)
         {

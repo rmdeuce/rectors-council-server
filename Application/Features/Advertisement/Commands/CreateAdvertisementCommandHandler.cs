@@ -23,6 +23,7 @@ namespace Application.Features.Advertisement.Commands
             {
                 Title = request.Title,
                 Description = request.Description,
+                MeetingDate = request.MeetingDate,
                 Agendas = mapper.Map<List<Agenda>>(request.Agendas)
             };
 
