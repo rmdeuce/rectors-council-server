@@ -15,5 +15,6 @@ namespace Application.Features.News.Commands
         public string Description { get; set; }
         public List<string> PhotosUrl { get; set; }
         public List<AgendaDTO> Agendas { get; set; }
+        public DateTime MeetingDate { get; set; }
     }
 }

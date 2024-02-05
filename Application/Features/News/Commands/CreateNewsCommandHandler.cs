@@ -28,7 +28,9 @@ namespace Application.Features.News.Commands
                 PhotosUrl = request.PhotosUrl,
                 Title = request.Title,
                 Description = request.Description,
+                MeetingDate = request.MeetingDate,
                 Agendas = mapper.Map<List<Agenda>>(request.Agendas)
+                
             };
 
             dbContext.News.Add(news);

@@ -17,6 +17,7 @@ namespace Application.Features.News.Queries.DTO
         public List<Agenda> Agendas { get; set; }
         public List<string> PhotosUrl { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public DateTime MeetingDate { get; set; }
 
         public void Mapping(Profile profile)
         {

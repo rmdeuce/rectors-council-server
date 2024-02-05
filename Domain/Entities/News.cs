@@ -13,5 +13,6 @@ namespace Domain.Entities
         public string Description { get; set; }
         public List<string> PhotosUrl { get; set; }
         public List<Agenda> Agendas { get; set; }
+        public DateTime MeetingDate { get; set; }
     }
 }
