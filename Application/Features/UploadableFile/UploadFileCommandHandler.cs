@@ -7,18 +7,16 @@ namespace Application.Features.UploadableFile
     {
         public async Task<string> Handle(UploadFileCommand request, CancellationToken cancellationToken)
         {
-            var file = request.File;
-
             var directoryPath = request.DirectoryPath;
 
-            var filePath = Path.Combine(directoryPath, Path.GetFileName(file.FileName));
+            var filePath = Path.Combine(directoryPath, Path.GetFileName(request.File.FileName));
 
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                await file.CopyToAsync(stream);
+                await request.File.CopyToAsync(stream);
             }
 
             return filePath;
