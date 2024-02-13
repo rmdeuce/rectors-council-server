@@ -1,6 +1,7 @@
 ﻿using Application.Features.Universities.Commands;
 using Application.Features.Universities.Queries;
 using Application.Features.Universities.Queries.DTO;
+using Application.Features.UploadableFile;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,39 @@ namespace WebAPI.Controllers
             logger.LogInformation($"User {UserEmail} created University with id: {id}");
 
             return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddFile(IFormFile file)
+        {
+            var fileName = Path.GetFileName(file.FileName);
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "University");
+
+            var command = new UploadFileCommand(file, directoryPath);
+
+            await Mediator.Send(command);
+
+            return Ok(fileName);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        {
+            var filePaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "University");
+
+                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+
+                filePaths.Add(fileName);
+            }
+
+            return Ok(filePaths);
         }
 
         [Authorize(Roles = "Content manager")]

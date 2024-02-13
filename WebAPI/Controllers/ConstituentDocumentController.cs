@@ -1,9 +1,12 @@
 ﻿using Application.Features.ConstituentDocuments.Commands;
 using Application.Features.ConstituentDocuments.Queries;
 using Application.Features.ConstituentDocuments.Queries.DTO;
+using Application.Features.UploadableFile;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using WebAPI.Models.DTO.ConstituentDocument;
 
 namespace WebAPI.Controllers
@@ -63,6 +66,39 @@ namespace WebAPI.Controllers
 
             // TODO: сформировать ссылку на новый элемент
             return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddFile(IFormFile file)
+        {
+            var fileName = Path.GetFileName(file.FileName);
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument");
+
+            var command = new UploadFileCommand(file, directoryPath);
+
+            await Mediator.Send(command);
+
+            return Ok(fileName);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        {
+            var filePaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument");
+
+                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+
+                filePaths.Add(fileName);
+            }
+
+            return Ok(filePaths);
         }
 
         [Authorize(Roles = "Content manager")]
