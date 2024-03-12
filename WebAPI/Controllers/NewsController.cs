@@ -70,7 +70,21 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddFile(IFormFile file)
         {
             var fileName = Path.GetFileName(file.FileName);
-            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News");
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Documents/");
+
+            var command = new UploadFileCommand(file, directoryPath);
+
+            await Mediator.Send(command);
+
+            return Ok(fileName);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddPhoto(IFormFile file)
+        {
+            var fileName = Path.GetFileName(file.FileName);
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Photos");
 
             var command = new UploadFileCommand(file, directoryPath);
 
@@ -88,7 +102,26 @@ namespace WebAPI.Controllers
             foreach (var file in files)
             {
                 var fileName = Path.GetFileName(file.FileName);
-                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News");
+                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Documents");
+
+                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+
+                filePaths.Add(fileName);
+            }
+
+            return Ok(filePaths);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<IActionResult> AddPhotos(List<IFormFile> files)
+        {
+            var filePaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Photos");
 
                 await Mediator.Send(new UploadFileCommand(file, directoryPath));
 
