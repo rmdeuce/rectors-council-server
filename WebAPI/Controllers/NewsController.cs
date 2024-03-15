@@ -67,12 +67,12 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "Content manager")]
         [HttpPost]
-        public async Task<IActionResult> AddFile(IFormFile file)
+        public async Task<IActionResult> AddFile(IFormFile file, int newsId)
         {
             var fileName = Path.GetFileName(file.FileName);
-            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Documents/");
+            //var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Documents/");
 
-            var command = new UploadFileCommand(file, directoryPath);
+            var command = new CreateNewsFilePathCommand(file, newsId);
 
             await Mediator.Send(command);
 
