@@ -63,9 +63,9 @@ namespace WebAPI.Controllers
             var fileName = Path.GetFileName(file.FileName);
             var directoryPath = Path.Combine(Configuration["FileUploadPath"], "University");
 
-            var command = new UploadFileCommand(file, directoryPath);
+            //var command = new UploadFileCommand(file, directoryPath);
 
-            await Mediator.Send(command);
+            //await Mediator.Send(command);
 
             return Ok(fileName);
         }
@@ -81,7 +81,7 @@ namespace WebAPI.Controllers
                 var fileName = Path.GetFileName(file.FileName);
                 var directoryPath = Path.Combine(Configuration["FileUploadPath"], "University");
 
-                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+                //await Mediator.Send(new UploadFileCommand(file, directoryPath));
 
                 filePaths.Add(fileName);
             }
