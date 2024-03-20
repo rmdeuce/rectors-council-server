@@ -1,8 +1,10 @@
-﻿using Application.Features.News.Commands;
+﻿using Application.Enums;
+using Application.Features.News.Commands;
 using Application.Features.News.Queries;
 using Application.Features.News.Queries.DTO;
 using Application.Features.UploadableFile;
 using AutoMapper;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.DTO.News;
@@ -66,66 +68,74 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFile(IFormFile file, int newsId)
+        [HttpPost("{newsId}")]
+        public async Task<IActionResult> AddDocument(IFormFile file, int newsId)
         {
-            var fileName = Path.GetFileName(file.FileName);
-            //var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Documents/");
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/");
 
-            var command = new CreateNewsFilePathCommand(file, newsId);
+            FileType fileType = FileType.Documents;
 
-            await Mediator.Send(command);
+            var command = new CreateNewsFilePathCommand(file, newsId, directoryPath, fileType);
 
-            return Ok(fileName);
+            var filePath = await Mediator.Send(command);
+
+            return Ok(filePath);
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddPhoto(IFormFile file)
+        [HttpPost("{newsId}")]
+        public async Task<IActionResult> AddPhoto(IFormFile file, int newsId)
         {
-            var fileName = Path.GetFileName(file.FileName);
-            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Photos");
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/");
 
-            var command = new UploadFileCommand(file, directoryPath);
+            FileType fileType = FileType.Photos;
 
-            await Mediator.Send(command);
+            var command = new CreateNewsFilePathCommand(file, newsId, directoryPath, fileType);
+            
+            var filePath = await Mediator.Send(command);
 
-            return Ok(fileName);
+            return Ok(filePath);
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        [HttpPost("{newsId}")]
+        public async Task<IActionResult> AddDocuments(List<IFormFile> files, int newsId)
         {
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/");
+
+            FileType fileType = FileType.Documents;
+
             var filePaths = new List<string>();
 
             foreach (var file in files)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Documents");
+                var command = new CreateNewsFilePathCommand(file, newsId, directoryPath, fileType);
 
-                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+                var filePath = await Mediator.Send(command);
 
-                filePaths.Add(fileName);
+                filePaths.Add(filePath);
             }
 
             return Ok(filePaths);
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddPhotos(List<IFormFile> files)
+        [HttpPost("{newsId}")]
+        public async Task<IActionResult> AddPhotos(List<IFormFile> files, int newsId)
         {
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/");
+
+            FileType fileType = FileType.Photos;
+
             var filePaths = new List<string>();
 
             foreach (var file in files)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "News/Photos");
+                var command = new CreateNewsFilePathCommand(file, newsId, directoryPath, fileType);
 
-                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+                var filePath = await Mediator.Send(command);
 
-                filePaths.Add(fileName);
+                filePaths.Add(filePath);
             }
 
             return Ok(filePaths);
