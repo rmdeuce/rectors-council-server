@@ -32,7 +32,7 @@ namespace Application.Features.InformationDocument.Commands
                 throw new NotFoundException(nameof(Domain.Entities.InformationDocument), request.Id);
 
             entity.Title = request.Title;
-            entity.DocumentUrl = request.DocumentUrl;
+            entity.DocumentsUrl = request.DocumentsUrl;
             entity.InformationDocumentType = request.InformationDocumentType;
             entity.Council = request.Council;
 

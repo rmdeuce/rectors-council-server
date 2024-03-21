@@ -1,4 +1,5 @@
-﻿using Application.Features.CouncilMember.Commands;
+﻿using Application.Enums;
+using Application.Features.CouncilMember.Commands;
 using Application.Features.CouncilMember.Queries;
 using Application.Features.CouncilMember.Queries.DTO;
 using Application.Features.UploadableFile;
@@ -54,7 +55,7 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "Content manager")]
         [HttpPost]
-        public async Task <ActionResult<int>> Create([FromBody] CreateCouncilMemberDTO dto)
+        public async Task<ActionResult<int>> Create([FromBody] CreateCouncilMemberDTO dto)
         {
             var command = mapper.Map<CreateCouncilMemberCommand>(dto);
 
@@ -66,11 +67,12 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFile(IFormFile file)
+        [HttpPost("{councilMemberId}")]
+        public async Task<IActionResult> AddFile(IFormFile file, int councilMemberId)
         {
-            var fileName = Path.GetFileName(file.FileName);
-            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "CouncilMember");
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "CouncilMember/");
+
+            FileType fileType = FileType.Photos; 
 
             //var command = new UploadFileCommand(file, directoryPath);
 
