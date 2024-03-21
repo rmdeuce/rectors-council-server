@@ -68,36 +68,17 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "Content manager")]
         [HttpPost("{councilMemberId}")]
-        public async Task<IActionResult> AddFile(IFormFile file, int councilMemberId)
+        public async Task<IActionResult> AddIconUrl(IFormFile file, int councilMemberId)
         {
             var directoryPath = Path.Combine(Configuration["FileUploadPath"], "CouncilMember/");
 
             FileType fileType = FileType.Photos; 
 
-            //var command = new UploadFileCommand(file, directoryPath);
+            var command = new CreateCouncilMemberFilePathCommand(file, councilMemberId, directoryPath, fileType);
 
-            //await Mediator.Send(command);
+            var filePath = await Mediator.Send(command);
 
-            return Ok(fileName);
-        }
-
-        [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFiles(List<IFormFile> files)
-        {
-            var filePaths = new List<string>();
-
-            foreach (var file in files)
-            {
-                var fileName = Path.GetFileName(file.FileName);
-                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "CouncilMember");
-
-                //await Mediator.Send(new UploadFileCommand(file, directoryPath));
-
-                filePaths.Add(fileName);
-            }
-
-            return Ok(filePaths);
+            return Ok(filePath);
         }
 
         [Authorize(Roles = "Content manager")]
