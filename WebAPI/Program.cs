@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TGMU.Utils.Auth.Jwt;
 using WebAPI.Middleware;
 using TGMU.Utils.Auth.Jwt.Helpers;
-using System.Text.Json.Serialization;
 
 namespace WebAPI
 {
@@ -35,7 +34,7 @@ namespace WebAPI
             });*/
 
             builder.Services.AddAutoMapper(config =>
-            {
+            { 
                 config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
                 config.AddProfile(new AssemblyMappingProfile(typeof(IAppDBContext).Assembly));
             });
