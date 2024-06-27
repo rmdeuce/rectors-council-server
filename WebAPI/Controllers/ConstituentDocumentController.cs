@@ -1,4 +1,5 @@
-﻿using Application.Features.ConstituentDocuments.Commands;
+﻿using Application.Enums;
+using Application.Features.ConstituentDocuments.Commands;
 using Application.Features.ConstituentDocuments.Queries;
 using Application.Features.ConstituentDocuments.Queries.DTO;
 using Application.Features.UploadableFile;
@@ -69,33 +70,37 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFile(IFormFile file)
+        [HttpPost("{constituentDocumentId}")]
+        public async Task<IActionResult> AddDocument(IFormFile file, int constituentDocumentId)
         {
-            var fileName = Path.GetFileName(file.FileName);
-            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument");
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument/");
 
-            var command = new UploadFileCommand(file, directoryPath);
+            FileType fileType = FileType.Documents;
 
-            await Mediator.Send(command);
+            var command = new CreateConstituentDocumentFilePathCommand(file, constituentDocumentId, directoryPath, fileType);
 
-            return Ok(fileName);
+            var filePath = await Mediator.Send(command);
+
+            return Ok(filePath);
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        [HttpPost("{constituentDocumentId}")]
+        public async Task<IActionResult> AddDocuments(List<IFormFile> files, int constituentDocumentId)
         {
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument/");
+
+            FileType fileType = FileType.Documents;
+
             var filePaths = new List<string>();
 
             foreach (var file in files)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument");
+                var command = new CreateConstituentDocumentFilePathCommand(file, constituentDocumentId, directoryPath, fileType);
 
-                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+                var filePath = await Mediator.Send(command);
 
-                filePaths.Add(fileName);
+                filePaths.Add(filePath);
             }
 
             return Ok(filePaths);

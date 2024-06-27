@@ -27,7 +27,7 @@ namespace Application.Features.InformationDocument.Commands
             var informationDocument = new Domain.Entities.InformationDocument
             {
                 Title = request.Title,
-                DocumentUrl = request.DocumentUrl,
+                DocumentsUrl = request.DocumentsUrl,
                 InformationDocumentType = mapper.Map<Domain.Entities.InformationDocumentType>(request.InformationDocumentType),
                 Council = mapper.Map<Domain.Entities.Council>(request.Council)
             };

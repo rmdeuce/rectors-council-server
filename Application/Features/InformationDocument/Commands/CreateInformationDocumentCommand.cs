@@ -13,7 +13,7 @@ namespace Application.Features.InformationDocument.Commands
     public class CreateInformationDocumentCommand : IRequest<int>
     {
         public string Title { get; set; }
-        public string[] DocumentUrl { get; set; }
+        public List<string> DocumentsUrl { get; set; }
         public InformationDocumentTypeDTO InformationDocumentType { get; set; }
         public CouncilDTO Council { get; set; }
     }

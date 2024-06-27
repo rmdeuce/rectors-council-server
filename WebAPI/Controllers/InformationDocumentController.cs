@@ -1,10 +1,12 @@
-﻿using Application.Features.InformationDocument.Commands;
+﻿using Application.Enums;
+using Application.Features.InformationDocument.Commands;
 using Application.Features.InformationDocument.Queries;
 using Application.Features.InformationDocument.Queries.DTO;
 using Application.Features.News.Commands;
 using Application.Features.News.Queries.DTO;
 using Application.Features.UploadableFile;
 using AutoMapper;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.DTO.InformationDocument;
@@ -69,33 +71,37 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFile(IFormFile file)
+        [HttpPost("{informationDocumentId}")]
+        public async Task<IActionResult> AddDocument(IFormFile file, int informationDocumentId)
         {
-            var fileName = Path.GetFileName(file.FileName);
-            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "InformationDocument");
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "InformationDocument/");
 
-            var command = new UploadFileCommand(file, directoryPath);
+            FileType fileType = FileType.Documents;
 
-            await Mediator.Send(command);
+            var command = new CreateInformationDocumentFilePathCommand(file, informationDocumentId, directoryPath, fileType);
 
-            return Ok(fileName);
+            var filePath = await Mediator.Send(command);
+
+            return Ok(filePath);
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        [HttpPost("{informationDocumentId}")]
+        public async Task<IActionResult> AddDocuments(List<IFormFile> files, int informationDocumentId)
         {
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "InformationDocument/");
+
+            FileType fileType = FileType.Documents;
+
             var filePaths = new List<string>();
 
             foreach (var file in files)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "InformationDocument");
+                var command = new CreateInformationDocumentFilePathCommand(file, informationDocumentId, directoryPath, fileType);
 
-                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+                var filePath = await Mediator.Send(command);
 
-                filePaths.Add(fileName);
+                filePaths.Add(filePath);
             }
 
             return Ok(filePaths);

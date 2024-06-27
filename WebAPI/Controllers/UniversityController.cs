@@ -1,8 +1,11 @@
-﻿using Application.Features.Universities.Commands;
+﻿using Application.Enums;
+using Application.Features.News.Commands;
+using Application.Features.Universities.Commands;
 using Application.Features.Universities.Queries;
 using Application.Features.Universities.Queries.DTO;
 using Application.Features.UploadableFile;
 using AutoMapper;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.DTO.University;
@@ -57,36 +60,52 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFile(IFormFile file)
+        [HttpPost("{universityId}")]
+        public async Task<IActionResult> AddPhoto(IFormFile file, int universityId)
         {
-            var fileName = Path.GetFileName(file.FileName);
-            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "University");
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "University/");
 
-            var command = new UploadFileCommand(file, directoryPath);
+            FileType fileType = FileType.Photos;
 
-            await Mediator.Send(command);
+            var command = new CreateUniversityFilePathCommand(file, universityId, directoryPath, fileType);
 
-            return Ok(fileName);
+            var filePath = await Mediator.Send(command);
+
+            return Ok(filePath);
         }
 
         [Authorize(Roles = "Content manager")]
-        [HttpPost]
-        public async Task<IActionResult> AddFiles(List<IFormFile> files)
+        [HttpPost("{universityId}")]
+        public async Task<IActionResult> AddPhotos(List<IFormFile> files, int universityId)
         {
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "University/");
+
+            FileType fileType = FileType.Photos;
+
             var filePaths = new List<string>();
 
             foreach (var file in files)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var directoryPath = Path.Combine(Configuration["FileUploadPath"], "University");
+                var command = new CreateUniversityFilePathCommand(file, universityId, directoryPath, fileType);
 
-                await Mediator.Send(new UploadFileCommand(file, directoryPath));
+                var filePath = await Mediator.Send(command);
 
-                filePaths.Add(fileName);
+                filePaths.Add(filePath);
             }
 
             return Ok(filePaths);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost("{universityId}")]
+        public async Task<IActionResult> AddIconUrl(string filePath, int universityId)
+        {
+            var command = new CreateUniversityIconUrlCommand(filePath, universityId);
+
+            await Mediator.Send(command);
+
+            return Ok(filePath);
+
         }
 
         [Authorize(Roles = "Content manager")]
