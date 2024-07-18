@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Features.News.Commands;
+using MediatR;
 using System.Runtime.CompilerServices;
 
 namespace Application.Features.UploadableFile
@@ -9,7 +10,7 @@ namespace Application.Features.UploadableFile
         {
             var directoryPath = request.DirectoryPath;
 
-            var filePath = Path.Combine(directoryPath, Path.GetFileName(request.File.FileName));
+            var filePath = request.FilePath;
 
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
