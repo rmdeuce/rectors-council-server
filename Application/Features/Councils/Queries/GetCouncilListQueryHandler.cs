@@ -23,11 +23,16 @@ namespace Application.Features.Councils.Queries
             var query = await dbContext.Councils
                 .Where(e => !e.IsDeleted)
                 .OrderByDescending(e => e.UpdatedAt)
+                .Skip(request.Position)
+                .Take(request.Take)
                 .ProjectTo<CouncilDTO>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
+            var total = await dbContext.Councils.CountAsync(e => !e.IsDeleted);
+
             return new CouncilListDTO
             {
+                Total = total,
                 Councils = query
             };
         }

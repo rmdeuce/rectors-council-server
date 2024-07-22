@@ -33,7 +33,7 @@ namespace Application.Features.CouncilMember.Queries
             return new CouncilMemberListDTO
             {
                 Total = total,
-                CounsilMembers = query
+                CouncilMembers = query
             };
         }
     }
