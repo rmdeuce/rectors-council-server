@@ -5,6 +5,6 @@ namespace Application.Features.CouncilMember.Queries.DTO
     {
         public int Total { get; set; }
 
-        public IList<CouncilMemberDTO> CounsilMembers { get; set; }
+        public IList<CouncilMemberDTO> CouncilMembers { get; set; }
     }
 }

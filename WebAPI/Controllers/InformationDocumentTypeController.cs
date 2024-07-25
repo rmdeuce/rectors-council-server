@@ -20,10 +20,19 @@ namespace WebAPI.Controllers
             this.logger = loggerFactory.CreateLogger("Information document type info");
         }
 
-        [HttpGet]
-        public async Task<ActionResult<InformationDocumentTypeListDTO>> GetAll()
+        [HttpGet("{page?}/{count?}")]
+        public async Task<ActionResult<InformationDocumentTypeListDTO>> GetAll(int page = 0, int count = 10)
         {
-            var query = new GetInformationDocumentTypeListQuery();
+            page = page > 0 ? page - 1 : 0;
+            count = count > 50 ? 50 : count;
+
+            var position = count * page;
+
+            var query = new GetInformationDocumentTypeListQuery
+            {
+                Position = position,
+                Take = count
+            };
 
             var result = await Mediator.Send(query);
 

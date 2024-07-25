@@ -22,11 +22,16 @@ namespace Application.Features.Universities.Queries
             var query = await dbContext.Universities
                 .Where(e => !e.IsDeleted)
                 .OrderByDescending(e => e.UpdatedAt)
+                .Skip(request.Position)
+                .Take(request.Take)
                 .ProjectTo<UniversityPreviewDTO>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
+            var total = await dbContext.Universities.CountAsync(e => !e.IsDeleted);
+
             return new UniversityListDTO
             {
+                Total = total,
                 Universities = query
             };
         }

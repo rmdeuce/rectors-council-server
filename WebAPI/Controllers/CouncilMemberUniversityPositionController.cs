@@ -20,10 +20,19 @@ namespace WebAPI.Controllers
             this.logger = loggerFactory.CreateLogger("Council member university position info");
         }
 
-        [HttpGet]
-        public async Task<ActionResult<CouncilMemberUniversityPositionListDTO>> GetAll()
+        [HttpGet("{page?}/{count?}")]
+        public async Task<ActionResult<CouncilMemberUniversityPositionListDTO>> GetAll(int page = 0, int count = 10)
         {
-            var query = new GetCouncilMemberUniversityPositionListQuery();
+            page = page > 0 ? page - 1 : 0;
+            count = count > 50 ? 50 : count;
+
+            var position = count * page;
+
+            var query = new GetCouncilMemberUniversityPositionListQuery
+            {
+                Position = position,
+                Take = count
+            };
 
             var result = await Mediator.Send(query);
 
