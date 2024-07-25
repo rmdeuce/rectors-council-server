@@ -29,11 +29,16 @@ namespace Application.Features.CouncilMemberUniversityPosition.Queries
             var query = await dbContext.CouncilMemberUniversityPositions
                 .Where(e => !e.IsDeleted)
                 .OrderByDescending(e => e.UpdatedAt)
+                .Skip(request.Position)
+                .Take(request.Take)
                 .ProjectTo<CouncilMemberUniversityPositionDTO>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
+            var total = await dbContext.CouncilMemberUniversityPositions.CountAsync(e => !e.IsDeleted);
+
             return new CouncilMemberUniversityPositionListDTO
             {
+                Total = total,
                 CouncilMemberUniversityPosition = query
             };
         }
