@@ -8,6 +8,7 @@ namespace Application.Features.Universities.Queries.DTO
 {
     public class UniversityListDTO
     {
+        public int Total { get; set; }
         public IList<UniversityPreviewDTO> Universities { get; set; } 
     }
 }

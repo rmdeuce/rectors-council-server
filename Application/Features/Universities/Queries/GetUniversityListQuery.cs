@@ -10,5 +10,8 @@ namespace Application.Features.Universities.Queries
 {
     public class GetUniversityListQuery : IRequest<UniversityListDTO>
     {
+        public int Position { get; set; }
+
+        public int Take { get; set; }
     }
 }

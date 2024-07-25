@@ -23,10 +23,19 @@ namespace WebAPI.Controllers
             this.logger = loggerFactory.CreateLogger("University info");
         }
 
-        [HttpGet]
-        public async Task<ActionResult<UniversityListDTO>> GetAll()
+        [HttpGet("{page?}/{count?}")]
+        public async Task<ActionResult<UniversityListDTO>> GetAll(int page = 0, int count = 10)
         {
-            var query = new GetUniversityListQuery();
+            page = page > 0 ? page - 1 : 0;
+            count = count > 50 ? 50 : count;
+
+            var position = count * page;
+
+            var query = new GetUniversityListQuery
+            {
+                Position = position,
+                Take = count
+            };
 
             var result = await Mediator.Send(query);
 
