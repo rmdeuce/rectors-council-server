@@ -28,11 +28,16 @@ namespace Application.Features.InformationDocumentType.Queries
             var query = await dbContext.InformationDocumentTypes
                 .Where(e => !e.IsDeleted)
                 .OrderByDescending(e => e.UpdatedAt)
+                .Skip(request.Position)
+                .Take(request.Take)
                 .ProjectTo<InformationDocumentTypeDTO>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
+            var total = await dbContext.InformationDocumentTypes.CountAsync(e => !e.IsDeleted);
+
             return new InformationDocumentTypeListDTO
             {
+                Total = total,
                 InformationDocumentType = query
             };
         }
