@@ -21,7 +21,7 @@ namespace Application.Features.ConstituentDocuments.Commands
         {
             var constituentDocument = new ConstituentDocument
             {
-                DocumentUrl = request.DocumentUrl,
+                DocumentsUrl = request.DocumentsUrl,
                 Title = request.Title,
                 Description = request.Description
             };

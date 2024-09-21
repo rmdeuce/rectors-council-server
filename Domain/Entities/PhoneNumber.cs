@@ -10,5 +10,6 @@ namespace Domain.Entities
         public bool IsFax { get; set; }
         public bool IsWhatsApp { get; set; }
         public bool IsTelegram { get; set; }
+        public int CouncilMemberId { get; set; }
     }
 }

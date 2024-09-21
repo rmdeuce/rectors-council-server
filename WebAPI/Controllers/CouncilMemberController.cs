@@ -1,6 +1,8 @@
-﻿using Application.Features.CouncilMember.Commands;
+﻿using Application.Enums;
+using Application.Features.CouncilMember.Commands;
 using Application.Features.CouncilMember.Queries;
 using Application.Features.CouncilMember.Queries.DTO;
+using Application.Features.UploadableFile;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +55,7 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "Content manager")]
         [HttpPost]
-        public async Task <ActionResult<int>> Create([FromBody] CreateCouncilMemberDTO dto)
+        public async Task<ActionResult<int>> Create([FromBody] CreateCouncilMemberDTO dto)
         {
             var command = mapper.Map<CreateCouncilMemberCommand>(dto);
 
@@ -62,6 +64,21 @@ namespace WebAPI.Controllers
             logger.LogInformation($"User {UserEmail} created Council member with id: {id}");
 
             return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost("{councilMemberId}")]
+        public async Task<IActionResult> AddIconUrl(IFormFile file, int councilMemberId)
+        {
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "CouncilMember/");
+
+            FileType fileType = FileType.Photos; 
+
+            var command = new CreateCouncilMemberFilePathCommand(file, councilMemberId, directoryPath, fileType);
+
+            var filePath = await Mediator.Send(command);
+
+            return Ok(filePath);
         }
 
         [Authorize(Roles = "Content manager")]

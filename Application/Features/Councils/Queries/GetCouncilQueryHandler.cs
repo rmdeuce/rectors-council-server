@@ -20,10 +20,32 @@ namespace Application.Features.Councils.Queries
 
         public async Task<CouncilDTO> Handle(GetCouncilQuery request, CancellationToken cancellationToken)
         {
-            var entity = await dbContext.Councils.FirstOrDefaultAsync(e => e.Id == request.Id && !e.IsDeleted);
+            var entity = await dbContext.Councils
+                .Where(c => c.Id == request.Id && !c.IsDeleted)
+                .Select(c => new Domain.Entities.Council
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    CouncilMembers = c
+                        .CouncilMembers
+                        .Select(e => new Domain.Entities.CouncilMember
+                        { 
+                            Id = e.Id, 
+                            FullName = e.FullName,
+                            IconUrl = e.IconUrl,
+                            ScienceDegree = e.ScienceDegree,
+                            Post = e.Post,
+                            University = e.University,
+                            CouncilPosition = e.CouncilPosition,
+                            CouncilMemberUniversityPosition = e.CouncilMemberUniversityPosition,
+                            PhoneNumbers = e.PhoneNumbers
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
 
             if (entity == null)
-                throw new NotFoundException(nameof(Domain.Entities.Agenda), request.Id);
+                throw new NotFoundException(nameof(Domain.Entities.Council), request.Id);
 
             return mapper.Map<CouncilDTO>(entity);
         }

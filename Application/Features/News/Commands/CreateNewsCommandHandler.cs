@@ -25,10 +25,12 @@ namespace Application.Features.News.Commands
         {
             var news = new Domain.Entities.News
             {
-                IconUrl = request.IconUrl,
+                PhotosUrl = request.PhotosUrl,
                 Title = request.Title,
                 Description = request.Description,
+                MeetingDate = request.MeetingDate,
                 Agendas = mapper.Map<List<Agenda>>(request.Agendas)
+                
             };
 
             dbContext.News.Add(news);

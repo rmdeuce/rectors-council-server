@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
@@ -9,9 +12,11 @@ namespace Domain.Entities
     public class News : BaseEntity
     {
         public int Id { get; set; }
-        public string[] IconUrl { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<Agenda> Agendas { get; set; }
+        public List<string> PhotosUrl { get; set; }
+        public List<string> DocumentsUrl { get; set; }
+        public DateTime MeetingDate { get; set; }
     }
 }

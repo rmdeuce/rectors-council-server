@@ -1,9 +1,13 @@
-﻿using Application.Features.ConstituentDocuments.Commands;
+﻿using Application.Enums;
+using Application.Features.ConstituentDocuments.Commands;
 using Application.Features.ConstituentDocuments.Queries;
 using Application.Features.ConstituentDocuments.Queries.DTO;
+using Application.Features.UploadableFile;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using WebAPI.Models.DTO.ConstituentDocument;
 
 namespace WebAPI.Controllers
@@ -63,6 +67,43 @@ namespace WebAPI.Controllers
 
             // TODO: сформировать ссылку на новый элемент
             return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost("{constituentDocumentId}")]
+        public async Task<IActionResult> AddDocument(IFormFile file, int constituentDocumentId)
+        {
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument/");
+
+            FileType fileType = FileType.Documents;
+
+            var command = new CreateConstituentDocumentFilePathCommand(file, constituentDocumentId, directoryPath, fileType);
+
+            var filePath = await Mediator.Send(command);
+
+            return Ok(filePath);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost("{constituentDocumentId}")]
+        public async Task<IActionResult> AddDocuments(List<IFormFile> files, int constituentDocumentId)
+        {
+            var directoryPath = Path.Combine(Configuration["FileUploadPath"], "ConstituentDocument/");
+
+            FileType fileType = FileType.Documents;
+
+            var filePaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                var command = new CreateConstituentDocumentFilePathCommand(file, constituentDocumentId, directoryPath, fileType);
+
+                var filePath = await Mediator.Send(command);
+
+                filePaths.Add(filePath);
+            }
+
+            return Ok(filePaths);
         }
 
         [Authorize(Roles = "Content manager")]

@@ -1,0 +1,98 @@
+﻿using Application.Features.CouncilMemberUniversityPosition.Commands;
+using Application.Features.CouncilMemberUniversityPosition.Queries;
+using Application.Features.CouncilMemberUniversityPosition.Queries.DTO;
+using AutoMapper;
+using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.DTO.CouncilMemberUniversityPosition;
+
+namespace WebAPI.Controllers
+{
+    public class CouncilMemberUniversityPositionController : BaseController
+    {
+        private readonly IMapper mapper;
+        private readonly ILogger logger;
+
+        public CouncilMemberUniversityPositionController(IMapper mapper, ILoggerFactory loggerFactory)
+        {
+            this.mapper = mapper;
+            this.logger = loggerFactory.CreateLogger("Council member university position info");
+        }
+
+        [HttpGet("{page?}/{count?}")]
+        public async Task<ActionResult<CouncilMemberUniversityPositionListDTO>> GetAll(int page = 0, int count = 10)
+        {
+            page = page > 0 ? page - 1 : 0;
+            count = count > 50 ? 50 : count;
+
+            var position = count * page;
+
+            var query = new GetCouncilMemberUniversityPositionListQuery
+            {
+                Position = position,
+                Take = count
+            };
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CouncilMemberUniversityPositionDTO>> Get(int id)
+        {
+            var query = new GetCouncilMemberUniversityPositionQuery
+            {
+                Id = id
+            };
+
+            var result = await Mediator.Send(query);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPost]
+        public async Task<ActionResult<int>> Create([FromBody] CreateCouncilMemberUniversityPositionDTO dto)
+        {
+            var command = mapper.Map<CreateCouncilMemberUniversityPositionCommand>(dto);
+
+            var id = await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} created Council member university position with id: {id}");
+
+            return Created("", id);
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateCouncilMemberUniversityPositionDTO dto)
+        {
+            var command = mapper.Map<UpdateCouncilMemberUniversityPositionCommand>(dto);
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} updated Council member university position with id: {dto.Id}");
+
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Content manager")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteCouncilMemberUniversityPositionCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            logger.LogInformation($"User {UserEmail} deleted Council member university position with id: {id}");
+
+            return NoContent();
+        }
+
+    }
+}

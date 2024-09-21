@@ -15,6 +15,7 @@ namespace Application.Features.Councils.Commands
             this.dbContext = dbcontext;
             this.mapper = mapper;
         }
+
         public async Task<int> Handle(CreateCouncilCommand request, CancellationToken cancellationToken)
         {
             var council = new Domain.Entities.Council

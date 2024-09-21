@@ -28,8 +28,13 @@ namespace WebAPI
 
             AddSwaggerWithAuth(builder);
 
-            builder.Services.AddAutoMapper(config =>
+            /*builder.Services.AddControllers().AddJsonOptions(options =>
             {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });*/
+
+            builder.Services.AddAutoMapper(config =>
+            { 
                 config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
                 config.AddProfile(new AssemblyMappingProfile(typeof(IAppDBContext).Assembly));
             });

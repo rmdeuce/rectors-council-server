@@ -23,7 +23,7 @@ namespace Application.Features.ConstituentDocuments.Commands
             if (entity == null)
                 throw new NotFoundException(nameof(ConstituentDocument), request.Id);
 
-            entity.DocumentUrl = request.DocumentUrl;
+            entity.DocumentsUrl = request.DocumentsUrl;
             entity.Title = request.Title;
             entity.Description = request.Description;
 

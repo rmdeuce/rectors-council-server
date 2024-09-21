@@ -24,8 +24,9 @@ namespace Application.Features.News.Commands
                 throw new NotFoundException(nameof(Domain.Entities.News), request.Id);
 
             entity.Title = request.Title;
-            entity.IconUrl = request.IconUrl;
+            entity.PhotosUrl = request.PhotosUrl;
             entity.Description = request.Description;
+            entity.MeetingDate = request.MeetingDate;
             entity.Agendas = UpdateAgendaListByNews(entity.Agendas, request.Agendas);
 
             await dbContext.SaveChangesAsync(cancellationToken);
